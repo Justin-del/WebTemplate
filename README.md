@@ -1,4 +1,4 @@
-# todoapp
+# WebTemplate
 
 To install dependencies:
 
