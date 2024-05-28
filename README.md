@@ -27,3 +27,16 @@ This project was created using `bun init` in bun v1.1.9. [Bun](https://bun.sh) i
 |                         | export function isUserAuthorized(request:Request)                             |
 |                         | export function createALogoutResponse()                                       |
 
+
+<table>
+  <thead>
+  <tr>
+    <td>Names of directory of file.</td>
+    <td>Purpose</td>
+  </tr>
+  </thead>
+  <tbody>
+    <tr>
+    </tr>
+  </tbody>
+</table>
