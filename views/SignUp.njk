@@ -1,0 +1,162 @@
+{% extends "Base.njk" %} {%block pageTitle%}Sign Up{%endblock%}
+{%block content %}
+<script defer>
+  function isEmailValid(email) {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  }
+
+  function hasAtLeastOneCapitalLetter(string) {
+    return /[A-Z]/.test(string);
+  }
+
+  function hasAtLeastOneLowecaseLetter(string) {
+    return /[a-z]/.test(string);
+  }
+
+  function hasAtLeastOneDigit(string) {
+    return /[0-9]/.test(string);
+  }
+
+  function hasAtLeastOneSymbol(string) {
+    return /[ `!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(string);
+  }
+
+  function hasAtLeast11Characters(string) {
+    return string.length > 11;
+  }
+
+  function isPasswordOk(password) {
+    return (
+      hasAtLeastOneCapitalLetter(password) &&
+      hasAtLeastOneLowecaseLetter(password) &&
+      hasAtLeastOneDigit(password) &&
+      hasAtLeastOneSymbol(password) &&
+      hasAtLeast11Characters(password)
+    );
+  }
+
+  function shouldDisableSubmitButton(email, password, confirmPassword) {
+    return (
+      !isPasswordOk(password) ||
+      !isEmailValid(email) ||
+      !(confirmPassword === password)
+    );
+  }
+</script>
+
+<style>
+  p.error {
+    color: red;
+    &::before {
+      content: "X ";
+    }
+  }
+
+  p.ok {
+    color: green;
+    &::before {
+      /*\2713 will display a checkmark.
+            */
+      content: "\2713  ";
+    }
+  }
+</style>
+
+{%if emailAlreadyExistsInDatabase %}
+  <script>alert("Oops! It looks like that email address is already registered. Please try logging in instead or use a different email to create a new account.")
+  </script>
+{%endif%}
+
+<form method="POST" x-data="{email:'{{email}}',password:'{{password}}',confirmPassword:'{{confirmPassword}}'}">
+  <div class="inputGroup">
+    <label for="email">Email</label>
+    <input
+      required="true"
+      type="email"
+      id="email"
+      name="email"
+      autocomplete="off"
+      x-model="email"
+    />
+    <p x-bind:style="{display:email===''?'block':'none',color:'red'}">
+      Email is required.
+    </p>
+    <p
+      x-bind:style="{display:email!=='' && !isEmailValid(email)?'block':'none',color:'red'}"
+    >
+      Email is invalid.
+    </p>
+  </div>
+
+  <div class="inputGroup">
+    <label for="password">Password</label>
+    <input
+      required="true"
+      autocomplete="new-password"
+      type="password"
+      id="password"
+      name="password"
+      x-model="password"
+    />
+    <p x-bind:style="{display:password===''?'block':'none',color:'red'}">
+      Password is required.
+    </p>
+    <p
+      x-bind:class="!hasAtLeast11Characters(password)?'error':'ok'"
+      x-bind:style="{display:password===''?'none':'block'}"
+    >
+      Password is at least 11 characters long.
+    </p>
+    <p
+      x-bind:class="!hasAtLeastOneCapitalLetter(password)?'error':'ok'"
+      x-bind:style="{display:password===''?'none':'block'}"
+    >
+      Password has at least one uppercase letter.
+    </p>
+    <p
+      x-bind:class="!hasAtLeastOneLowecaseLetter(password)?'error':'ok'"
+      x-bind:style="{display:password===''?'none':'block'}"
+    >
+      Password has at least one lowercase letter.
+    </p>
+    <p
+      x-bind:class="!hasAtLeastOneDigit(password)?'error':'ok'"
+      x-bind:style="{display:password===''?'none':'block'}"
+    >
+      Password has at least one digit.
+    </p>
+    <p
+      x-bind:class="!hasAtLeastOneSymbol(password)?'error':'ok'"
+      x-bind:style="{display:password===''?'none':'block'}"
+    >
+      Password has at least one special character.
+    </p>
+  </div>
+
+  <div class="inputGroup">
+    <label for="confirmPassword">Confirm Password</label>
+    <input
+      required="true"
+      type="password"
+      id="confirmPassword"
+      name="confirmPassword"
+      x-model="confirmPassword"
+    />
+    <p
+      x-bind:style="{display:confirmPassword===password?'none':'block',color:'red'}"
+    >
+      Confirm password and password do not match.
+    </p>
+  </div>
+  <div class="inputGroup">
+    <button
+      type="submit"
+      x-bind:disabled="shouldDisableSubmitButton(email,password,confirmPassword)?true:false"
+    >
+      Sign Up
+    </button>
+  </div>
+</form>
+{%endblock%}

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="//unpkg.com/alpinejs" defer></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+        --navBarBackgroundColor: black;
+        --navBarLinkColorWhenItIsNotBeingHovered: white;
+        --navBarLinkColorWhenItIsBeingHovered: lightblue;
+        --colorForInput: black;
+        --colorForButton: white;
+        --backgroundColorForButton: blue;
+      }
+
+      nav {
+        background-color: var(--navBarBackgroundColor);
+        padding: 1rem;
+        & ul.container {
+          display: flex;
+          flex-wrap: wrap;
+          & a {
+            /*
+                    text-decoration:none is for removing the underlines from links.
+                    */
+            text-decoration: none;
+            padding: 1rem;
+            color: var(--navBarLinkColorWhenItIsNotBeingHovered);
+          }
+          & a:hover {
+            color: var(--navBarLinkColorWhenItIsBeingHovered);
+          }
+          & a:focus {
+            outline: none;
+            color: var(--navBarLinkColorWhenItIsBeingHovered);
+          }
+          & li {
+            /*
+                    list-style-type:none is for removing the bullets from lists.
+                    */
+            list-style-type: none;
+          }
+        }
+      }
+
+      form {
+        margin-left: auto;
+        margin-right: auto;
+        width: 80%;
+        max-width: 600px;
+
+        & div.inputGroup {
+          margin-top: 1rem;
+          color: var(--colorForInput);
+          width: 100%;
+        }
+        & label {
+          display: block;
+        }
+        & input {
+          width: 100%;
+          padding: 0.5rem;
+          border-radius: 1rem;
+          border-style: solid;
+        }
+      }
+
+      button {
+        padding: 0.5rem;
+        border-radius: 1rem;
+        color: var(--colorForButton);
+        background-color: var(--backgroundColorForButton);
+        border: none;
+      }
+
+      button:disabled {
+        filter: brightness(80%);
+      }
+
+      button:not([disabled]):hover {
+        transform: scale3d(1.1, 1.1, 1.1);
+      }
+    </style>
+  </head>
+  <body onload="console.log('loaded!')">
+    <header>
+      <nav>
+        <ul class="container">
+          <li>
+            <a href="/signUp">Sign Up</a>
+          </li>
+          <li>
+            <a href="/login">Login</a>
+          </li>
+          {% if isAuthorized %}
+          <li>
+            <a href="/authorized">Authorized</a>
+          </li>
+          <li>
+            <a href="/logout">Logout</a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <h1 style="text-align: center; margin-top: 1rem">
+        {%block pageTitle%}{%endblock%}
+      </h1>
+      {%block content%}{%endblock%}
+    </main>
+  </body>
+</html>

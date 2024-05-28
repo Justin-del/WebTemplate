@@ -1,0 +1,80 @@
+{% extends "Base.njk" %} {%block pageTitle%}Login{%endblock%} {%block content%}
+<script defer>
+  function isEmailValid(email) {
+    return email.match(
+      /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  }
+
+  function shouldDisableSubmitButton(email, password) {
+    return !isEmailValid(email) || password === "";
+  }
+</script>
+
+{% if emailExistsInDatabase===false %}
+<script>
+  alert(
+    "Sorry, we couldn't find an account with that email address. Please double-check your email or sign up to create a new account."
+  );
+</script>
+{% endif %} {%if isPasswordIncorrect %}
+<script>
+  alert("Password is incorrect.");
+</script>
+{%endif %}
+
+<form method="POST" x-data="{email:'{{ email }}',password:'{{ password }}'}">
+  <div class="inputGroup">
+    <label for="email">Email</label>
+    <input
+      required="true"
+      type="email"
+      id="email"
+      name="email"
+      autocomplete="off"
+      x-model="email"
+    />
+    <p x-bind:style="{display:email===''?'block':'none',color:'red'}">
+      Email is required.
+    </p>
+    <p
+      x-bind:style="{display:email!=='' && !isEmailValid(email)?'block':'none',color:'red'}"
+    >
+      Email is invalid.
+    </p>
+  </div>
+
+  <div class="inputGroup" x-data="{inputType:'password'}">
+    <label for="password">Password</label>
+    <input
+      required="true"
+      x-bind:type="inputType"
+      id="password"
+      name="password"
+      x-model="password"
+    />
+
+    <!--show password checkbox-->
+    <label for="showPassword" style="display: inline">Show password</label>
+    <input
+      type="checkbox"
+      x-on:click="if (inputType==='password'){inputType='text'}else {inputType='password'}"
+      style="width: fit-content; margin-top: 5px"
+      id="showPassword"
+      autocomplete="off"
+    />
+
+    <p x-bind:style="{display:password===''?'block':'none',color:'red'}">
+      Password is required.
+    </p>
+  </div>
+  <div class="inputGroup">
+    <button
+      type="submit"
+      x-bind:disabled="shouldDisableSubmitButton(email,password)"
+    >
+      Login
+    </button>
+  </div>
+</form>
+{%endblock%}
