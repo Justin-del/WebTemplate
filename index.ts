@@ -53,7 +53,7 @@ Bun.serve({
       }
 
       if (request.method=="GET"){
-        return renderTemplate("Page Not Found");
+        return renderTemplate("PageNotFound");
       }
       return createAHTTPNotFoundResponse();
   }
