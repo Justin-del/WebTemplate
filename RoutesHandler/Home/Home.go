@@ -12,6 +12,7 @@ func HandleRoutes() {
 			return
 		}
 		t, _ := template.ParseFiles("./templates/base.html", "./templates/index.html")
+	
 		t.ExecuteTemplate(responseWriter, "index.html", nil)
 	})
 }

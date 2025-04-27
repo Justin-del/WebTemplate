@@ -5,7 +5,7 @@
 {{end}}
 
 {{define  "content"}}
-<script defer src="/static/js/Authentication.js?javascript"></script>
+<script defer src="/static/js/Authentication.js?js"></script>
 
 <h1 class="page-title">Login</h1>
 
@@ -14,5 +14,9 @@
     <input id="username" name="username" autocomplete="username webauthn"/> -->
     <div>Login with your passkey</div>
     <button type="button" onclick="login()">Login</button>
+    <div style="margin-top:1rem;">No account yet? Click here to <a href="/SignUp">sign up.</a></div>
+    <div class="error-message">
+
+    </div>
 </form>
 {{end}}

@@ -5,6 +5,8 @@ import (
 	SignUp "WebTemplate/RoutesHandler/SignUp"
 	StaticHandler "WebTemplate/RoutesHandler/StaticHandler"
 	Login "WebTemplate/RoutesHandler/Login"
+	Logout "WebTemplate/RoutesHandler/Logout"
+	Authorized "WebTemplate/RoutesHandler/Authorized"
 )
 
 func HandleRoutes() {
@@ -12,4 +14,6 @@ func HandleRoutes() {
 	Home.HandleRoutes()
 	StaticHandler.HandleRoutes()
 	Login.HandleRoutes()
+	Logout.HandleRoutes()
+	Authorized.HandleRoutes()
 }

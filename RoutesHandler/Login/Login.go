@@ -3,6 +3,7 @@ package login
 import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
 	Credentials "WebTemplate/Database/Credentials"
+	Sessions "WebTemplate/Database/Sessions"
 	webauthn "WebTemplate/Utils/WebAuthn"
 	"WebTemplate/globals"
 	"encoding/base64"
@@ -72,17 +73,35 @@ func HandleRoutes() {
 
 		rpIdHash := decodedAuthData[0:32]
 		decodedClientData, err4 := base64.RawURLEncoding.DecodeString(clientDataJSON)
-		
+
 		if err4 != nil {
 			http.Error(responseWriter, "Bad request", 400)
 		}
 
 		signatureCounterFromAuthenticator := binary.BigEndian.Uint32(decodedAuthData[33:37])
 
-		is_authenticated := webauthn.IsRpIdHashCorrect(rpIdHash) && isClientDataJSONCorrect && webauthn.AreFlagsValid(decodedAuthData[32]) && webauthn.IsSignatureVerified(append(decodedAuthData, webauthn.Sha256Hash(decodedClientData)...), decodedSignature, publicKey) && webauthn.IsSignatureCounterValid(signatureCounterFromServer, signatureCounterFromAuthenticator)
+		isAuthenticated := webauthn.IsRpIdHashCorrect(rpIdHash) && isClientDataJSONCorrect && webauthn.AreFlagsValid(decodedAuthData[32]) && webauthn.IsSignatureVerified(append(decodedAuthData, webauthn.Sha256Hash(decodedClientData)...), decodedSignature, publicKey) && webauthn.IsSignatureCounterValid(signatureCounterFromServer, signatureCounterFromAuthenticator)
 
 		Credentials.UpdateSignatureCounter(decodedRawId, signatureCounterFromAuthenticator)
-		fmt.Println(is_authenticated)
+		fmt.Println(isAuthenticated)
+
+		if isAuthenticated {
+			sessionId := Sessions.CreateASession(string(decodedUserHandle))
+			fmt.Println("The session id is ", sessionId)
+
+			http.SetCookie(responseWriter, &http.Cookie{
+				Name:     "session_id",
+				Value:    sessionId,
+				Path:     "/",
+				HttpOnly: true,
+				Secure:   true,
+				SameSite: http.SameSiteStrictMode,
+			})
+
+			responseWriter.WriteHeader(200)
+		} else {
+			responseWriter.WriteHeader(401)
+		}
 	})
 
 }

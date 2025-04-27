@@ -126,5 +126,13 @@ async function login(){
         }
     })
 
+    if (response.status == 200){
+        //Change /authorized to the route that you would like the user to access after logging in.
+        window.location.href="/authorized";
+    } else {
+        console.log("User is not authorized!");
+        displayUnsuccesfulMessage("Login failed. Please try again.")
+    }
+
     console.log(credential)
 }
