@@ -1,0 +1,1 @@
+Every file in the database folder must have an implementation of the function CreateTableIfNotExists.

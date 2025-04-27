@@ -1,0 +1,18 @@
+{{template "base" .}}
+
+{{define "title"}}
+    Login
+{{end}}
+
+{{define  "content"}}
+<script defer src="/static/js/Authentication.js?javascript"></script>
+
+<h1 class="page-title">Login</h1>
+
+<form>
+    <!-- <label for="username">Username</label>
+    <input id="username" name="username" autocomplete="username webauthn"/> -->
+    <div>Login with your passkey</div>
+    <button type="button" onclick="login()">Login</button>
+</form>
+{{end}}

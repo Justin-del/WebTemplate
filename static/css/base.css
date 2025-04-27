@@ -1,0 +1,117 @@
+*{
+    margin:0;
+    padding:0;
+    font-family:sans-serif;
+    box-sizing:border-box;
+    margin-inline: 0;
+    padding-inline:0;
+    margin-block:0;
+    padding-block:0;
+}
+
+:root{
+    --navbar-background-color:black;
+    --navbar-color:white;
+    --navbar-hover-or-focus-color:lightblue;
+}
+
+nav{
+    background-color:var(--navbar-background-color);
+    width:100%;
+
+    & a{
+        text-decoration:none;
+        color:var(--navbar-color);
+    }
+    
+    & .navbar-header{
+        padding:1rem;
+        font-size:larger;
+    
+        /**
+        Style the hamburger button
+        */
+        & button{
+            color:white;
+            background-color:transparent;
+            float:right;
+            font-size:inherit;
+            border:none;
+        }
+    }
+
+    & a:hover, & a:focus, & button:focus{
+        color:var(--navbar-hover-or-focus-color);
+        outline:none;
+    }
+
+    & ul{
+        transition:height 0.5s ease;
+        & li{
+            padding:1rem;
+        }
+        & li::marker{
+            content:'';
+        }
+    }
+}
+
+nav.desktop-style{
+    & .navbar-header{
+        display:inline-block;
+        margin-right:2rem;
+
+        /*
+        Hide the hamburger icon.
+        */
+        & button{
+            display:none;
+        }
+    }
+
+    & ul{
+        /*Force the contents of the navbar to be displayed */
+        height:auto !important;
+        display:inline-block;
+        & li{
+            display:inline-block;
+        }
+    }
+}
+
+
+.page-title{
+    margin-top:1rem;
+    margin-bottom:1rem;
+    text-align:center;
+}
+
+form{
+    width:80%;
+    max-width:500px;
+    margin-left:auto;
+    margin-right:auto;
+
+    & input{
+        width:100%;
+        padding:0.5rem;
+    }
+
+    & button{
+        margin-top:1rem;
+    }
+
+    & .error-message{
+        margin-top:1rem;
+        color:darkred;
+    }
+
+    & .succesful-message{
+        margin-top:1rem;
+        color:darkgreen;
+    }
+
+    button{
+        padding:0.25rem;
+    }
+}

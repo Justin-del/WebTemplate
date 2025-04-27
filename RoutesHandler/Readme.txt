@@ -1,0 +1,1 @@
+Every file inside the RoutesHandler directory must have an implementation of the function HandleRoutes.
