@@ -2,7 +2,7 @@ package authorized
 
 import (
 	Sessions "WebTemplate/Database/Sessions"
-	"html/template"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
 	"net/http"
 )
 
@@ -20,8 +20,7 @@ func HandleRoutes() {
 		sessionId := cookie.Value
 
 		if Sessions.DoesSessionExistsInDatabase(sessionId) {
-			t, _ := template.ParseFiles("./templates/base.html", "./templates/Authorized.html")
-			t.ExecuteTemplate(responseWriter, "Authorized.html", nil)
+			TemplateParser.ParseTemplate("Authorized", responseWriter, request)
 		} else {
 			http.Redirect(responseWriter, request, "/login", http.StatusSeeOther)
 		}

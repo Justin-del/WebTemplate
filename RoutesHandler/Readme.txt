@@ -1,1 +1,1 @@
-Every file inside the RoutesHandler directory must have an implementation of the function HandleRoutes.
+Every file inside the RoutesHandler (except for TemplateParser.go) directory must have an implementation of the function HandleRoutes.

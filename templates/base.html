@@ -7,15 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Your website description">
     <title>{{block "title" .}} {{end}}</title>
-    <link rel="stylesheet" href="/static/css/base.css?css">
+    <link rel="stylesheet" href="/static/css/base.css?cascading_style_sheets">
     <script  defer src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 
-
-
 <body onload="collapseNavbar();updateNavbarStyleBasedOnScreenWidth();" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar();">
     <script defer src="/static/js/base.js?javascript"></script>
-
     <header>
         <nav id="navbar" hx-boost="true" hx-preserve>
             <div class="navbar-header" >
@@ -24,15 +21,22 @@
             </div>
 
             <ul id="navbar-contents">
-                <li>
-                    <a href="/">Home</a>
-                </li>
-                <li>
-                    <a href="/SignUp">Sign Up</a>
-                </li>
-                <li>
-                    <a href="/login">Login</a>
-                </li>
+                    <!-- An example of how to display links conditionally for a navbar, depending on whether the user is logged in or not. -->                    
+                    {{if $.IsLoggedIn}}
+                        <li>
+                            <a href="/authorized">Authorized</a>
+                        </li>
+                    {{else}}
+                        <li>
+                            <a href="/">Home</a>
+                        </li>
+                        <li>
+                            <a href="/SignUp">Sign Up</a>
+                        </li>
+                        <li>
+                            <a href="/login">Login</a>
+                        </li>
+                    {{end}}
             </ul>
         </nav>
     </header>

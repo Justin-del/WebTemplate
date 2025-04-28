@@ -3,18 +3,17 @@ package SignUp
 import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
 	users "WebTemplate/Database/Users"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
 	webauthn "WebTemplate/Utils/WebAuthn"
 	"WebTemplate/globals"
 	"encoding/json"
-	"html/template"
 	"net/http"
 )
 
 func HandleRoutes() {
 	http.HandleFunc("GET /SignUp", func(responseWriter http.ResponseWriter, request *http.Request) {
 		AuthenticationChallenges.DeleteAnyExpiredChallenges()
-		t, _ := template.ParseFiles("./templates/base.html", "./templates/SignUp.html")
-		t.ExecuteTemplate(responseWriter, "SignUp.html", nil)
+		TemplateParser.ParseTemplate("SignUp", responseWriter, request)
 	})
 
 	http.HandleFunc("GET /SignUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {

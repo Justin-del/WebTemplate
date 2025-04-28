@@ -50,6 +50,11 @@ nav{
         & li{
             padding:1rem;
         }
+
+        & li:last-of-type{
+            padding-bottom:2rem;
+        }
+
         & li::marker{
             content:'';
         }
@@ -75,6 +80,10 @@ nav.desktop-style{
         display:inline-block;
         & li{
             display:inline-block;
+        }
+
+        & li:last-of-type{
+            padding-bottom:1rem;
         }
     }
 }

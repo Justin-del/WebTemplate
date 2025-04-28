@@ -4,20 +4,19 @@ import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
 	Credentials "WebTemplate/Database/Credentials"
 	Sessions "WebTemplate/Database/Sessions"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
 	webauthn "WebTemplate/Utils/WebAuthn"
 	"WebTemplate/globals"
 	"encoding/base64"
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"html/template"
 	"net/http"
 )
 
 func HandleRoutes() {
 	http.HandleFunc("GET /login", func(responseWriter http.ResponseWriter, request *http.Request) {
-		t, _ := template.ParseFiles("./templates/base.html", "./templates/Login.html")
-		t.ExecuteTemplate(responseWriter, "Login.html", nil)
+		TemplateParser.ParseTemplate("login", responseWriter, request)
 	})
 
 	http.HandleFunc("GET /login/AuthenticationData", func(responseWriter http.ResponseWriter, request *http.Request) {

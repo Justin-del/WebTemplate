@@ -1,7 +1,7 @@
 package home
 
 import (
-	"html/template"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
 	"net/http"
 )
 
@@ -11,8 +11,6 @@ func HandleRoutes() {
 			http.NotFound(responseWriter, request)
 			return
 		}
-		t, _ := template.ParseFiles("./templates/base.html", "./templates/index.html")
-	
-		t.ExecuteTemplate(responseWriter, "index.html", nil)
+		TemplateParser.ParseTemplate("index", responseWriter, request)
 	})
 }
