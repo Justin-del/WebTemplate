@@ -31,6 +31,9 @@ func CreateASession(user_id string) string {
 func DoesSessionExistsInDatabase(session_id string) bool {
 	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
 
+	//Before that, delete all sessions that are expired.
+	database.Exec("delete from sessions where datetime('now')>absolute_time_out OR datetime('now')>idle_time_out")
+
 	var result bool
 	database.QueryRow("select exists(select 1 FROM sessions where id=?)", session_id).Scan(&result)
 
@@ -40,5 +43,5 @@ func DoesSessionExistsInDatabase(session_id string) bool {
 func DeleteSession(session_id string) {
 	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
 
-	database.Exec("delete from sessions where id=?", session_id);
+	database.Exec("delete from sessions where id=?", session_id)
 }

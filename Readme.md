@@ -9,3 +9,5 @@ Also, see [Authorized.go](/RoutesHandler/Authorized/Authorized.go) for an exampl
 Also, you might want to change /authorized to the route that you would like the user to access after logging in at [Authentication.js](/static/js/Authentication.js)
 
 Also, often times, you might want the navigation bar to display different links conditionally. You can have a look at [base.html](/templates/base.html) for how this is done.
+
+Also, you might want to change the session timeout at [Sessions.go](/Database/Sessions/Sessions.go).
