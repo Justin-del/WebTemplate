@@ -22,7 +22,7 @@ func CreateASession(user_id string) string {
 
 	encoded_id := hex.EncodeToString(id)
 
-	//The idle timeout is common to be 15 minutes for low risk applications and 5 minutes for high risk applications. See https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration Also, you might want to lower the absolute timeout for high risk applications.
+	//The idle timeout is common to be 15 to 30 minutes for low risk applications and 2-5 minutes for high risk applications. See https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html#session-expiration Also, you might want to lower the absolute timeout for high risk applications.
 	database.Exec("insert into sessions (id,absolute_time_out, idle_time_out, user_id) values (?,datetime('now','+24 hour'), datetime('now','+15 minute'),?)", encoded_id, user_id)
 
 	return encoded_id
