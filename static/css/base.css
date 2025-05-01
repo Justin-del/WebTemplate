@@ -25,7 +25,7 @@ body.dark-theme{
     color:white;
     background-color:rgba(64,64,64);
 
-    a:not(nav a) {
+    & a:not(nav a) {
         color:white;
     }
 }
