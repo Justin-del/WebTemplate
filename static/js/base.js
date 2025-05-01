@@ -109,11 +109,18 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
 
 });
 
-function loadSavedTheme(){
+function setTheme(){
     //Get theme from session storage.
-    const theme = window.sessionStorage.getItem('theme')
-    if (theme !== null){
-        window.theme = theme;
+    const savedTheme = window.sessionStorage.getItem('theme')
+
+    if (savedTheme !== null){
+        window.theme=savedTheme
+    } else {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            window.theme="dark"
+        } else {
+            window.theme = "light"
+        }
     }
 
     const anchorTag = document.querySelector("a.theme")
