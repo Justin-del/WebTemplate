@@ -28,6 +28,7 @@ body.dark-theme{
     & a:not(nav a) {
         color:white;
     }
+    
 }
 
 nav{
