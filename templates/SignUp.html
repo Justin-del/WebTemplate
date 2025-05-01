@@ -6,7 +6,6 @@
 
 {{define  "content"}}
 
-<script defer src="/static/js/Authentication.js?cache-busted"></script>
 
 <h1 class="page-title">Sign Up</h1>
 
@@ -15,12 +14,15 @@
     <input id="username" name="username" autocomplete="username webauthn"/>
     <button type="button" onclick="const username=document.querySelector('#username').value;signUp(username);
     ">Sign Up</button>
-     <div style="margin-top:1rem;">Already have an account? Click here to <a href="/login">login.</a></div>
-    <div class="error-message">
+     <div style="margin-top:1rem;">Already have an account? Click here to <a href="/login">login</a>.</div>
+    <div class="error-message" aria-live="polite" aria-atomic="true">
 
     </div>
-    <div class="succesful-message">
+    <div class="succesful-message" aria-live="polite" aria-atomic="true">
         
     </div>
 </form>
+
+<script type="module" src="../static/js/Authentication/SignUp.js?signUp">
+</script>
 {{end}}

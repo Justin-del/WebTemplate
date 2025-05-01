@@ -129,7 +129,7 @@ func CreateMockPublicKeyCredential(clientData map[string]any, publicKey []byte, 
 	response["clientDataJSON"] = base64.RawURLEncoding.EncodeToString(clientDataJSON)
 
 	response["attestationObject"] = CreateMockAttestationObject(publicKey, relyingPartyId, userPresent, userVerified, backupEligibility, backupState, credentialId)
-
+	
 	publicKeyCredential["response"] = response
 
 	jsonString, _ := json.Marshal(publicKeyCredential)

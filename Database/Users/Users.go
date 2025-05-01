@@ -11,6 +11,12 @@ func CreateTableIfNotExists() {
 	database.Exec("create table if not exists users(id TEXT PRIMARY KEY)")
 }
 
+func DeleteUser(userId string) {
+	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
+	database.Exec("pragma foreign_keys=on")
+	database.Exec("delete from users where id = ?", userId)
+}
+
 /*Returns true if the operation is succesful and false if the operation is not succesful.*/
 func AddUserIntoDatabaseWithCredentials(user_id string, credential_id []byte, public_key []byte, signature_counter uint32) bool {
 	database, _ := sql.Open("sqlite3", "file:Database.sqlite")

@@ -12,12 +12,10 @@ import (
 
 func HandleRoutes() {
 	http.HandleFunc("GET /SignUp", func(responseWriter http.ResponseWriter, request *http.Request) {
-		AuthenticationChallenges.DeleteAnyExpiredChallenges()
 		TemplateParser.ParseTemplate("SignUp", responseWriter, request)
 	})
 
 	http.HandleFunc("GET /SignUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {
-		AuthenticationChallenges.DeleteAnyExpiredChallenges()
 		challenge := AuthenticationChallenges.CreateNewChallenge()
 
 		data := webauthn.RegistrationData{
@@ -32,11 +30,10 @@ func HandleRoutes() {
 	})
 
 	http.HandleFunc("POST /SignUp/{challengeId}/{userId}", func(responseWriter http.ResponseWriter, request *http.Request) {
-		AuthenticationChallenges.DeleteAnyExpiredChallenges()
 
 		var publicKeyCredential map[string]any
 		err := json.NewDecoder(request.Body).Decode(&publicKeyCredential)
-
+		
 		if err != nil {
 			http.Error(responseWriter, "Error", 400)
 		}

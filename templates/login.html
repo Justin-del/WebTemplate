@@ -5,18 +5,18 @@
 {{end}}
 
 {{define  "content"}}
-<script defer src="/static/js/Authentication.js?japan"></script>
 
 <h1 class="page-title">Login</h1>
 
 <form>
-    <!-- <label for="username">Username</label>
-    <input id="username" name="username" autocomplete="username webauthn"/> -->
     <div>Login with your passkey</div>
     <button type="button" onclick="login()">Login</button>
     <div style="margin-top:1rem;">No account yet? Click here to <a href="/SignUp">sign up.</a></div>
-    <div class="error-message">
+    <div class="error-message" aria-atomic="true" aria-live="polite" >
 
     </div>
 </form>
+
+<script type="module" src="../static/js/Authentication/Login.js?authenticate">
+</script>
 {{end}}

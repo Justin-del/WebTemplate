@@ -1,6 +1,7 @@
 package webauthn
 
 import (
+	"WebTemplate/globals"
 	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
@@ -30,13 +31,14 @@ type RegistrationData struct {
 	TimeoutInMinutes        int
 }
 
+
 /*
 Represents the data that is needed by navigator.credentials.get in the frontend
 */
 type AuthenticationData struct {
-	Challenge        Challenge
-	RelyingPartyId   string
-	TimeoutInMinutes int
+	Challenge          Challenge
+	RelyingPartyId     string
+	TimeoutInMinutes   int
 }
 
 var ListOfSupportedCoseAlgorithms = []int64{-8, -7, -257}
@@ -155,7 +157,7 @@ Assuming that the following are true:
 
 	Also, please note that functionToSaveCredentialsIntoDatabase should return true if the operation is succesful and false if the operation is not succesful.
 */
-func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, authData []byte, functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
+func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, authData []byte,  functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
 	hash := authData[0:32]
 
 	credentialIdLength := binary.BigEndian.Uint16(authData[53:55])
@@ -189,6 +191,8 @@ Also, it is of the caller's responsibility to ensure that the challenge gets del
 func SignUp(originOfServer string, userId string, challengeId string, functionToGetCorrectChallenge func(id any) []byte, publicKeyCredential map[string]any, functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
 
 	response := publicKeyCredential["response"].(map[string]any)
+
+
 	clientDataJSON := response["clientDataJSON"].(string)
 
 	correctChallenge := functionToGetCorrectChallenge(challengeId)
@@ -204,7 +208,65 @@ func SignUp(originOfServer string, userId string, challengeId string, functionTo
 		return false
 	}
 
-	isOperationSuccesful := SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId, attestationObject.AuthData, functionToSaveCredentialsIntoDatabase)
+	isOperationSuccesful := SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId, attestationObject.AuthData,  functionToSaveCredentialsIntoDatabase)
 
 	return isOperationSuccesful
+}
+
+/*
+Returns a non empty string, which is the user id if the authentication process succeeds and an empty string if the authentication process fails.
+It is of the caller's responsibility to ensure that the challenge gets deleted after the authentication process succeeds.
+*/
+func Authenticate(publicKeyCredential map[string]any, functionToGetPublicKeyAndSignatureCounter func(credential_id []byte, user_id []byte) ([]byte, uint32), functionToGetCorrectChallenge func(challenge_id any) []byte, challenge_id string, functionToUpdateSignatureCounter func(credential_id []byte, signature_counter uint32)) string {
+
+	response := publicKeyCredential["response"].(map[string]any)
+	rawId := publicKeyCredential["rawId"].(string)
+	signature := response["signature"].(string)
+	userHandle := response["userHandle"].(string)
+
+	decodedRawId, err1 := base64.RawURLEncoding.DecodeString(rawId)
+	decodedSignature, err2 := base64.RawURLEncoding.DecodeString(signature)
+	decodedUserHandle, err3 := base64.RawURLEncoding.DecodeString(userHandle)
+
+	if err1 != nil {
+		return ""
+	}
+
+	if err2 != nil {
+		return ""
+	}
+
+	if err3 != nil {
+		return ""
+	}
+
+	publicKey, signatureCounterFromServer := functionToGetPublicKeyAndSignatureCounter(decodedRawId, decodedUserHandle)
+
+	correct_challenge := functionToGetCorrectChallenge(challenge_id)
+
+	var clientDataJSON string = response["clientDataJSON"].(string)
+
+	isClientDataJSONCorrect := IsClientDataJSONCorrect(globals.OriginOfServer, correct_challenge, "webauthn.get", clientDataJSON)
+
+	authData := response["authenticatorData"].(string)
+	decodedAuthData, _ := base64.RawURLEncoding.DecodeString(authData)
+
+	rpIdHash := decodedAuthData[0:32]
+	decodedClientData, err4 := base64.RawURLEncoding.DecodeString(clientDataJSON)
+
+	if err4 != nil {
+		return ""
+	}
+
+	signatureCounterFromAuthenticator := binary.BigEndian.Uint32(decodedAuthData[33:37])
+
+	isAuthenticated := IsRpIdHashCorrect(rpIdHash) && isClientDataJSONCorrect && AreFlagsValid(decodedAuthData[32]) && IsSignatureVerified(append(decodedAuthData, Sha256Hash(decodedClientData)...), decodedSignature, publicKey) && IsSignatureCounterValid(signatureCounterFromServer, signatureCounterFromAuthenticator)
+
+	functionToUpdateSignatureCounter(decodedRawId, signatureCounterFromAuthenticator)
+
+	if isAuthenticated{
+		return string(decodedUserHandle)
+	} else {
+		return ""
+	}
 }

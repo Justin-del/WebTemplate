@@ -1,27 +1,10 @@
-/**
- * 
- * @param {string|undefined} message 
- */
-function displayUnsuccesfulMessage(message){
-    if (message===undefined){
-        message="The operation either timed out or was not allowed."
-    } else if (message.includes("The operation is not allowed at this time because the page does not have focus.")){
-        message+=" If a new passkey was created, you will need to delete it."
-    }
-    document.querySelector("form .error-message").textContent=message;
-    document.querySelector("form .succesful-message").textContent="";
-}
-
-function displaySuccesfulMessage(){
-    document.querySelector("form .succesful-message").innerHTML="Succesfully signed up! You can now proceed to <a href='/login'>login</a>.";
-    document.querySelector("form .error-message").textContent="";
-}
+import {displaySuccesfulMessage, displayUnsuccesfulMessage, clearMessages} from './Utils.js'
 
 /**
  * @param {string} username
  */
-async function signUp(username){
-
+export async function signUp(username){
+    clearMessages()
     let response = await fetch("/SignUp/RegistrationData");
     
     /**@type {{Challenge:{
@@ -92,45 +75,8 @@ async function signUp(username){
     if (response.status!==200){
         displayUnsuccesfulMessage()
     } else {
-        displaySuccesfulMessage()
+        displaySuccesfulMessage("Succesfully signed up! You can now proceed to <a href='/login'>login</a>.")
     }
 }
 
-async function login(){
-    let response = await fetch("/login/AuthenticationData")
-
-    /**@type{{
-      Challenge:{
-      Id:number,
-      Challenge:string
-      },
-      RelyingPartyId:string,
-      TimeoutInMinutes:number
-    }} */
-    let authenticationData = await response.json()
-
-    const credential = await navigator.credentials.get({
-        publicKey:{
-            challenge:Uint8Array.from(atob(authenticationData.Challenge.Challenge), c=>c.charCodeAt(0)),
-            rpId: authenticationData.RelyingPartyId,
-            timeout:authenticationData.TimeoutInMinutes*1000*60, //timeout need to be in milliseconds
-            userVerification:"required"
-    }
-    })
-    
-    response = await fetch(`/login/${authenticationData.Challenge.Id}`, {
-        method:"POST",
-        body:JSON.stringify(credential),
-        headers:{
-            "Content-Type":"application/json"
-        }
-    })
-
-    if (response.status === 200){
-        //Change this to where you would like the user to be redirected after the user logs in.
-        window.location.href="/authorized"
-    } else {
-        displayUnsuccesfulMessage("Login failed. Please try again.")
-    }
-
-}
+window.signUp=signUp;

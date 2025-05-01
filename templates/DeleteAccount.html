@@ -1,0 +1,28 @@
+{{template "base" .}}
+
+{{define "title"}}
+    Login
+{{end}}
+
+{{define  "content"}}
+
+<h1 class="page-title">Delete Account</h1>
+
+<form>
+    <strong>
+        Warning, this action cannot be undone!
+    </strong>
+    <div style="margin-top:1rem;">Delete account with your passkey</div>
+    <button type="button" onclick="deleteAccount()">Delete account</button>
+    <div class="error-message" aria-atomic="true" aria-live="polite" >
+
+    </div>
+    <div class="succesful-message" aria-atomic="true" aria-live="polite" >
+
+    </div>
+
+</form>
+
+<script type="module" src="../static/js/Authentication/DeleteAccount.js?deleteAccount">
+</script>
+{{end}}

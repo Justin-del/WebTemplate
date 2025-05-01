@@ -8,7 +8,7 @@ import (
 
 func CreateTableIfNotExists() {
 	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
-	database.Exec("Create table if not exists credentials(id BLOB PRIMARY KEY, public_key BLOB NOT NULL, user_id TEXT NOT NULL, signature_counter INTEGER NOT NULL,  FOREIGN KEY(user_id) REFERENCES users(id))")
+	database.Exec("Create table if not exists credentials(id BLOB PRIMARY KEY, public_key BLOB NOT NULL, user_id TEXT NOT NULL, signature_counter INTEGER NOT NULL,  FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE)")
 }
 
 func GetPublicKeyAndSignatureCounter(credential_id []byte, user_id []byte) ([]byte, uint32) {

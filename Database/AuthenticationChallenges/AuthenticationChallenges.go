@@ -37,11 +37,9 @@ Returns the challenge that was deleted
 func DeleteChallengeByID(id any) []byte {
 	var challenge []byte
 	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
+
+	//Before that, delete any expired challenges.
+	database.Exec("delete from authentication_challenges where datetime('now')>expires_at")
 	database.QueryRow("delete from authentication_challenges where id=? returning challenge", id).Scan(&challenge)
 	return challenge
-}
-
-func DeleteAnyExpiredChallenges() {
-	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
-	database.Exec("delete from authentication_challenges where datetime('now')>expires_at")
 }

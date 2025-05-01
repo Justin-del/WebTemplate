@@ -26,7 +26,14 @@ func ParseTemplate(templateName string, responseWriter http.ResponseWriter, requ
 		IsLoggedIn: Sessions.DoesSessionExistsInDatabase(sessionId),
 	}
 
+	if data.IsLoggedIn {
+		//Disable caching of sensitive data.
+		responseWriter.Header().Add("Cache-control", "no-store")
+	}
+
+	responseWriter.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+
 	t, err := template.ParseFiles("./templates/"+baseTemplate+".html", "./templates/"+templateName+".html")
 
-	err=t.ExecuteTemplate(responseWriter, templateName+".html", data)
+	err = t.ExecuteTemplate(responseWriter, templateName+".html", data)
 }
