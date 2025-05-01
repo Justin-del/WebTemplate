@@ -14,7 +14,7 @@
     <input id="username" name="username" autocomplete="username webauthn"/>
     <button type="button" onclick="const username=document.querySelector('#username').value;signUp(username);
     ">Sign Up</button>
-     <div style="margin-top:1rem;">Already have an account? Click here to <a href="/login">login</a>.</div>
+     <div style="margin-top:1rem;">Already have an account? Click here to <a hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">login</a>.</div>
     <div class="error-message" aria-live="polite" aria-atomic="true">
 
     </div>

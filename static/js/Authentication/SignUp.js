@@ -75,7 +75,7 @@ export async function signUp(username){
     if (response.status!==200){
         displayUnsuccesfulMessage()
     } else {
-        displaySuccesfulMessage("Succesfully signed up! You can now proceed to <a href='/login'>login</a>.")
+        displaySuccesfulMessage('Succesfully signed up! You can now proceed to <a hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">login</a>')
     }
 }
 

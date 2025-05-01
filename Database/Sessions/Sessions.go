@@ -15,7 +15,6 @@ var idleTimeOutInMinutes int = 15
 func CreateTableIfNotExists() {
 	database, _ := sql.Open("sqlite3", "file:Database.sqlite")
 	database.Exec("create table if not exists sessions(id TEXT PRIMARY KEY, absolute_time_out TEXT NOT NULL, idle_time_out TEXT NOT NULL, user_id TEXT NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE)")
-
 }
 
 func CreateASession(userId string) string {

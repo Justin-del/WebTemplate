@@ -14,6 +14,8 @@ export function displayUnsuccesfulMessage(message){
 
     errorMessageElement.textContent=message;
 
+    htmx.process(errorMessageElement)
+
     if (succesfulMessageElement){
         succesfulMessageElement.textContent  = "";
     }
@@ -28,6 +30,9 @@ export function displaySuccesfulMessage(message){
     const succesfulMessageElement = document.querySelector("form .succesful-message")
 
     succesfulMessageElement.innerHTML=message;
+
+    htmx.process(succesfulMessageElement)
+
     if (errorMessageElement){
         errorMessageElement.textContent = "";
     }

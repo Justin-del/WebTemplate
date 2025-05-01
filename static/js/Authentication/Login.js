@@ -35,7 +35,7 @@ export async function login(){
         //Change this to where you would like the user to be redirected after the user logs in.
         window.location.href="/authorized"
     } else {
-        displayUnsuccesfulMessage("Login failed. Please try again.")
+        displayUnsuccesfulMessage("Login failed. Please try again with another passkey.")
     }
 
 }
