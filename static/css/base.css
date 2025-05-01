@@ -15,6 +15,21 @@
     --navbar-hover-or-focus-color:lightblue;
 }
 
+
+body.light-theme{
+    color:black;
+    background-color:white;
+}
+
+body.dark-theme{
+    color:white;
+    background-color:rgba(64,64,64);
+
+    a:not(nav a) {
+        color:white;
+    }
+}
+
 nav{
     background-color:var(--navbar-background-color);
     width:100%;
@@ -45,8 +60,16 @@ nav{
         outline:none;
     }
 
+    & a.theme:focus{
+        outline:1px solid white;
+        outline-offset:0.25rem;
+    }
+
+
     & ul{
-        transition:height 0.5s ease;
+        transition:height 0.5s ease, margin-left 0.5s ease;
+        margin-left:0;
+        height:0;
         & li{
             padding:1rem;
         }
@@ -58,6 +81,10 @@ nav{
         & li::marker{
             content:'';
         }
+    }
+
+    & ul.hide-contents{
+        margin-left:-100%;
     }
 }
 
@@ -121,5 +148,16 @@ form{
 
     button{
         padding:0.25rem;
+    }
+}
+
+body.dark-theme{
+    & form{
+        & .error-message{
+            color:pink;
+        }
+        & .succesful-message{
+            color:lightgreen;
+        }
     }
 }

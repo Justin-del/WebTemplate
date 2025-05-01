@@ -7,12 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Your website description">
     <title>{{block "title" .}} {{end}}</title>
-    <link rel="stylesheet" href="/static/css/base.css?cascading_style_sheets">
+    <link rel="stylesheet" href="/static/css/base.css?css">
     <script  defer src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 
-<body onload="collapseNavbar();updateNavbarStyleBasedOnScreenWidth();" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar();">
-    <script defer src="/static/js/base.js?javascript"></script>
+<body onload="window.setTimeout(()=>loadSavedTheme(),500) /*The timeout should be based on the timeout of the transition defined in /static/css/base.css.*/; collapseNavbar();updateNavbarStyleBasedOnScreenWidth();" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar();">
+    <script defer src="/static/js/base.js?js"></script>
     <header>
         <nav id="navbar" hx-boost="true" hx-preserve>
             <div class="navbar-header" >
@@ -43,6 +43,9 @@
                             <a href="/deleteAccount">Delete Account</a>
                         </li>
                     {{end}}
+                    <li>
+                        <a  aria-label="Screen reader users, please ignore this." href="javascript:;" onclick="toggleTheme(this)" class="theme">☀</a>
+                    </li>
             </ul>
         </nav>
     </header>

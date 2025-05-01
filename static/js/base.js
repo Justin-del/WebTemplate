@@ -1,28 +1,67 @@
 window.is_navbar_expanded = false;
-window.maximum_width_for_navbar_to_be_displayed_in_mobile_mode = 400;
+window.maximum_width_for_navbar_to_be_displayed_in_mobile_mode = 600;
+window.theme = "light";
+
+function saveThemeIntoSessionStorage(){
+    window.sessionStorage.setItem("theme", window.theme)
+}
+
+/**
+ * 
+ * @param {HTMLAnchorElement} element 
+ */
+function toggleTheme(element){
+    if (window.theme === "light"){
+        window.theme = "dark"
+    } else {
+        window.theme = "light"
+    }
+
+    saveThemeIntoSessionStorage()
+
+    if (window.theme == "light"){
+        document.body.classList.add("light-theme")
+        document.body.classList.remove("dark-theme")
+
+        element.textContent="☀"
+    } else {
+        document.body.classList.add("dark-theme")
+        document.body.classList.remove("light-theme")
+
+        element.textContent="🌙"
+    }
+}
 
 function expandNavbar(){
+
     is_navbar_expanded=true;
     const navbarContents = document.querySelector("nav ul");
     const navbarToggler = document.querySelector("nav button");
+
+    navbarContents.classList.remove("hide-contents")
 
     navbarContents.style.height = navbarContents.scrollHeight+'px';
     navbarContents.inert = false;
 
     navbarToggler.innerHTML = 'X';
     navbarToggler.setAttribute('aria-expanded','true');
+
 }
 
 function collapseNavbar(){
+
     is_navbar_expanded=false;
     const navbarContents = document.querySelector("nav ul");
     const navbarToggler = document.querySelector("nav button");
+
+    navbarContents.classList.add("hide-contents")
     
     navbarContents.style.height = '0';
     navbarContents.inert = true;
 
     navbarToggler.innerHTML = '&#8801'; //unicode icon for hamburger;
     navbarToggler.setAttribute('aria-expanded','false');
+
 }
 
 //Expand navbar if it's collapsed and collapse the navbar if it's expanded.
@@ -40,6 +79,7 @@ function updateNavbarStyleBasedOnScreenWidth(){
     const navbarContents = document.querySelector("nav ul");
 
     if (window.screen.availWidth > maximum_width_for_navbar_to_be_displayed_in_mobile_mode){
+        navbarContents.classList.remove('hide-contents')
         navbar.classList.add('desktop-style');
         navbarContents.inert = false;
     } else {
@@ -53,3 +93,40 @@ function updateNavbarStyleBasedOnScreenWidth(){
 }
 
 window.onresize=updateNavbarStyleBasedOnScreenWidth;
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
+    window.theme = event.matches ? "dark" : "light";
+
+    saveThemeIntoSessionStorage()
+
+    if (window.theme == "light"){
+        document.body.classList.add("light-theme")
+        document.body.classList.remove("dark-theme")
+    } else {
+        document.body.classList.add("dark-theme")
+        document.body.classList.remove("light-theme")
+    }
+
+});
+
+function loadSavedTheme(){
+    //Get theme from session storage.
+    const theme = window.sessionStorage.getItem('theme')
+    if (theme !== null){
+        window.theme = theme;
+    }
+
+    const anchorTag = document.querySelector("a.theme")
+
+    if (window.theme === "light"){
+        document.body.classList.add("light-theme")
+        document.body.classList.remove("dark-theme")
+        anchorTag.textContent="☀"
+    } else {
+        document.body.classList.add("dark-theme")
+        document.body.classList.remove("light-theme")
+        anchorTag.textContent="🌙"
+    }
+}
+
+
