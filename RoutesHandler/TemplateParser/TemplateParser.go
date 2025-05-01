@@ -32,6 +32,8 @@ func ParseTemplate(templateName string, responseWriter http.ResponseWriter, requ
 	}
 
 	responseWriter.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains; preload")
+	responseWriter.Header().Add("Cross-Origin-Opener-Policy", "same-origin")
+	responseWriter.Header().Add("X-Frame-Options", "deny")
 
 	t, err := template.ParseFiles("./templates/"+baseTemplate+".html", "./templates/"+templateName+".html")
 
