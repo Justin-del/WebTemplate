@@ -161,7 +161,7 @@ body.dark-theme{
             color:pink;
         }
         & .succesful-message{
-            color:lightgreen;
+            color:darkseagreen;
         }
     }
 }
@@ -201,4 +201,15 @@ body.dark-theme{
 
 .htmx-request#spinner{
     opacity:1;
+}
+
+/*Code for HTMX spinner ends*/
+
+
+.screen-readers-only{
+    position: absolute !important; /* Outside the DOM flow */
+    height: 1px; width: 1px; /* Nearly collapsed */
+    overflow: hidden;
+    clip: rect(1px 1px 1px 1px); /* IE 7+ only support clip without commas */
+    clip: rect(1px, 1px, 1px, 1px); /* All other browsers */
 }

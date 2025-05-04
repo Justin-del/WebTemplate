@@ -9,7 +9,7 @@ import (
 var templatesFolder string = "templates"
 var baseTemplate string = "base"
 
-func ParseTemplate(templateName string, responseWriter http.ResponseWriter, request *http.Request) {
+func ParseTemplate(templateName string, pageName string, responseWriter http.ResponseWriter, request *http.Request) {
 	cookie, err := request.Cookie("session_id")
 
 	var sessionId string
@@ -20,11 +20,14 @@ func ParseTemplate(templateName string, responseWriter http.ResponseWriter, requ
 
 	type Data struct {
 		IsLoggedIn bool
+		PageName   string
 	}
 
 	data := Data{
 		IsLoggedIn: Sessions.DoesSessionExistsInDatabase(sessionId),
+		PageName:   pageName,
 	}
+
 
 	if data.IsLoggedIn {
 		//Disable caching of sensitive data.

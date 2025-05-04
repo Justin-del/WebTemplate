@@ -12,7 +12,7 @@ import (
 
 func HandleRoutes() {
 	http.HandleFunc("GET /SignUp", func(responseWriter http.ResponseWriter, request *http.Request) {
-		TemplateParser.ParseTemplate("SignUp", responseWriter, request)
+		TemplateParser.ParseTemplate("SignUp", "Sign Up", responseWriter, request)
 	})
 
 	http.HandleFunc("GET /SignUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {

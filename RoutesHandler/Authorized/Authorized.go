@@ -20,7 +20,7 @@ func HandleRoutes() {
 		sessionId := cookie.Value
 
 		if Sessions.DoesSessionExistsInDatabase(sessionId) {
-			TemplateParser.ParseTemplate("Authorized", responseWriter, request)
+			TemplateParser.ParseTemplate("Authorized", "Authorized", responseWriter, request)
 		} else {
 			http.Redirect(responseWriter, request, "/login", http.StatusSeeOther)
 		}

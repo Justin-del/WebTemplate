@@ -12,7 +12,7 @@
     <script  defer src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 
-<body onload="window.setTimeout(()=>setTheme(),500) /*The timeout should be based on the timeout of the transition defined in /static/css/base.css.*/; collapseNavbar();updateNavbarStyleBasedOnScreenWidth();registerServiceWorker()" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar(); setTheme()">
+<body onload="window.setTimeout(()=>setTheme(),500) /*The timeout should be based on the timeout of the transition defined in /static/css/base.css.*/; collapseNavbar();updateNavbarStyleBasedOnScreenWidth();registerServiceWorker()" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar(); setTheme(); ">
     
     <header>
         <nav id="navbar" hx-boost="true" hx-preserve>
@@ -45,7 +45,7 @@
                         </li>
                     {{end}}
                     <li>
-                        <a aria-label="Screen reader users, please ignore this." href="javascript:;" onclick="toggleTheme(this)" class="theme">☀</a>
+                        <a aria-label="Toggle theme" href="javascript:;" onclick="toggleTheme(this)" class="theme">☀</a>
                     </li>
             </ul>
         </nav>
@@ -56,6 +56,16 @@
 
     <div id="spinner" aria-hidden="true">
     </div>
+
+
+    <div aria-atomic="true" aria-live="polite"  class="screen-readers-only">
+    </div>
+
+    <script>
+        window.setTimeout(()=>document.querySelector(".screen-readers-only").textContent = "You are now at the {{$.PageName}} page.",500);
+    </script>
+
+
 </body>
 </html>
 {{end}}

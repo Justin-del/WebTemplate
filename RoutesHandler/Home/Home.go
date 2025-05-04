@@ -11,6 +11,6 @@ func HandleRoutes() {
 			http.NotFound(responseWriter, request)
 			return
 		}
-		TemplateParser.ParseTemplate("index", responseWriter, request)
+		TemplateParser.ParseTemplate("index", "Home", responseWriter, request)
 	})
 }
