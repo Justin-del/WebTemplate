@@ -144,13 +144,5 @@ async function registerServiceWorker(){
     }
 }
 
-/**
- * 
- * @param {string} message 
- */
-function setScreenReaderOnlyMessage(message){
-    document.querySelector(".screen-readers-only").textContent = message;
-}
-
 
 

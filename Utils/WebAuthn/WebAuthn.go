@@ -192,7 +192,6 @@ func SignUp(originOfServer string, userId string, challengeId string, functionTo
 
 	response := publicKeyCredential["response"].(map[string]any)
 
-
 	clientDataJSON := response["clientDataJSON"].(string)
 
 	correctChallenge := functionToGetCorrectChallenge(challengeId)
