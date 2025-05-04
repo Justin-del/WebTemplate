@@ -1,6 +1,6 @@
 This is a template for creating websites in go. It includes authentication and session management.
 It uses sqlite database as its default database.
-For authentication, it has an implementation of WebAuthn.
+It uses WebAuthn for authentication.
 It also uses HTMX for a smoother page experience.
 It also has a [service worker](/static/js/ServiceWorker.js) for some basic offline functionality.
 
