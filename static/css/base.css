@@ -23,7 +23,7 @@ body.light-theme{
 
 body.dark-theme{
     color:white;
-    background-color:rgba(64,64,64);
+    background-color:rgb(64,64,64);
 
     & a:not(nav a) {
         color:white;
@@ -61,9 +61,12 @@ nav{
         outline:none;
     }
 
+    & a.theme{
+        padding:0.25rem;
+    }
+
     & a.theme:focus{
         outline:1px solid white;
-        outline-offset:0.25rem;
     }
 
 
@@ -161,4 +164,41 @@ body.dark-theme{
             color:lightgreen;
         }
     }
+}
+
+/*Code for HTMX spinner begins*/
+#spinner{
+    opacity:0;
+    transition:opacity 0.5s ease;
+    position:absolute;
+    width:50vmin;
+    height:50vmin;
+    border-top:1rem solid lightskyblue;
+    border-left:1rem solid grey;
+    border-right:1rem solid grey;
+    border-bottom:1rem solid grey;
+    border-radius:50%;
+    top:50%;
+    left:50%;
+    pointer-events:none;
+    transform:translate(-50%, -50%);
+    animation:spin 2s linear infinite;
+}
+
+@keyframes spin{
+    0% { 
+        transform: translate(-50%,-50%)  rotate(0deg);
+     }
+    100% {
+         transform:translate(-50%,-50%) rotate(360deg);
+     }
+}
+
+
+.htmx-request #spinner{
+    opacity:1;
+}
+
+.htmx-request#spinner{
+    opacity:1;
 }

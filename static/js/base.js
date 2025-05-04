@@ -2,8 +2,8 @@ window.is_navbar_expanded = false;
 window.maximum_width_for_navbar_to_be_displayed_in_mobile_mode = 600;
 window.theme = "light";
 
-function saveThemeIntoSessionStorage(){
-    window.sessionStorage.setItem("theme", window.theme)
+function saveThemeIntoLocalStorage(){
+    window.localStorage.setItem("theme", window.theme)
 }
 
 /**
@@ -17,7 +17,7 @@ function toggleTheme(element){
         window.theme = "light"
     }
 
-    saveThemeIntoSessionStorage()
+    saveThemeIntoLocalStorage()
 
     if (window.theme == "light"){
         document.body.classList.add("light-theme")
@@ -97,7 +97,7 @@ window.onresize=updateNavbarStyleBasedOnScreenWidth;
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', event => {
     window.theme = event.matches ? "dark" : "light";
 
-    saveThemeIntoSessionStorage()
+    saveThemeIntoLocalStorage()
 
     if (window.theme == "light"){
         document.body.classList.add("light-theme")
@@ -110,8 +110,8 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', eve
 });
 
 function setTheme(){
-    //Get theme from session storage.
-    const savedTheme = window.sessionStorage.getItem('theme')
+    //Get theme from local storage.
+    const savedTheme = window.localStorage.getItem('theme')
 
     if (savedTheme !== null){
         window.theme=savedTheme
@@ -135,5 +135,14 @@ function setTheme(){
         anchorTag.textContent="🌙"
     }
 }
+
+async function registerServiceWorker(){
+    if ("serviceWorker" in navigator){
+        await navigator.serviceWorker.register("./static/js/ServiceWorker.js", {
+            scope:'/'
+        });
+    }
+}
+
 
 

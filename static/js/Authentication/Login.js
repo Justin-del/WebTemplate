@@ -40,4 +40,12 @@ export async function login(){
 
 }
 
-window.login = login;
+window.login = async()=>{
+    try{
+        await login()
+    } catch (error){
+        if (error.message === "Failed to fetch"){
+            alert("Failed to connect to the server. Please ensure that you are connected to the Internet.")
+        }
+    }
+};

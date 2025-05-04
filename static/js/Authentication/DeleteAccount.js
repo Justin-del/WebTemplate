@@ -2,6 +2,7 @@ import {displayUnsuccesfulMessage, clearMessages, displaySuccesfulMessage} from 
 
 export async function deleteAccount(){
     clearMessages();
+
     let response = await fetch("/login/AuthenticationData")
 
     /**@type{{
@@ -34,9 +35,17 @@ export async function deleteAccount(){
     if (response.status === 200){
         displaySuccesfulMessage("Account deletion was succesful. Don't forget to delete the passkeys associated with this account as well!")
     } else {
-        displayUnsuccesfulMessage("Account deletion failed. Please try again.")
+        displayUnsuccesfulMessage("Account deletion failed. Please try again with another passkey that is associated with the account that you would like to delete.")
     }
 
 }
 
-window.deleteAccount = deleteAccount;
+window.deleteAccount = async()=>{
+    try{
+        await deleteAccount()
+    } catch (error){
+        if (error.message === "Failed to fetch"){
+            alert("Failed to connect to the server. Please ensure that you are connected to the Internet.")
+        }
+    }
+};

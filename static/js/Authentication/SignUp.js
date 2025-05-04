@@ -79,4 +79,16 @@ export async function signUp(username){
     }
 }
 
-window.signUp=signUp;
+/**
+ * 
+ * @param {string} username 
+ */
+window.signUp=async(username)=>{
+    try{
+        await signUp(username)
+    } catch (error){
+        if (error.message === "Failed to fetch"){
+            alert("Failed to connect to the server. Please ensure that you are connected to the Internet.")
+        }
+    }
+};
