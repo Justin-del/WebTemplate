@@ -45,7 +45,7 @@ var TimeoutInMinutes = 5
 
 var RP = RelyingParty{
 	Name: "localhost",
-	Id:   "localhost",
+	Id:   "w6sxn51j-8080.asse.devtunnels.ms",
 }
 
 type ClientData struct {

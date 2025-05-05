@@ -8,7 +8,7 @@ const cacheFirstWithCacheRefresh  = {
 /**
  * This origin should match the origin of your application.
  */
-const origin = "http://localhost:8080"
+const origin = "https://w6sxn51j-8080.asse.devtunnels.ms"
 
 /**
  * 

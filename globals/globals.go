@@ -4,4 +4,4 @@ package globals
 /*
 Should not have a slash at the end.
 */
-const OriginOfServer = "http://localhost:8080"
+const OriginOfServer = "https://w6sxn51j-8080.asse.devtunnels.ms"

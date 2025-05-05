@@ -10,11 +10,13 @@
 <h1 class="page-title">Sign Up</h1>
 
 <form>
-    <label for="username">Username</label>
-    <input id="username" name="username" />
+    <div>
+        <label for="username">Username</label>
+        <input id="username" name="username" />
+    </div>
     <button type="button" onclick="const username=document.querySelector('#username').value;signUp(username);
     ">Sign Up</button>
-     <div style="margin-top:1rem;">Already have an account? <a hx-indicator="#spinner" hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">Login</a></div>
+     <div>Already have an account? <a hx-indicator="#spinner" hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">Login</a></div>
     <div class="error-message" aria-live="polite" aria-atomic="true">
 
     </div>
