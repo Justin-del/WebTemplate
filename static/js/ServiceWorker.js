@@ -56,15 +56,11 @@ self.addEventListener("fetch", (event) => {
             if (isCacheFirstWithCacheRefresh(event.request.url)){
                 return await caches.match(event.request) || await responseFromNetwork || new Response("You are offline.");
             }
-            
-            const response = await fetch(event.request)
 
-            if (response.status<400){
-                return response;
-            } else {
-                return new Response("You are offline.")
-            }
+            const response = await fetch(event.request)
+            return response
             
+        
         })(),
     );
 });

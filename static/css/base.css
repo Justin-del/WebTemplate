@@ -65,13 +65,8 @@ nav{
         outline:none;
     }
 
-
-    & a.theme{
-        padding:0.25rem;
-    }
-
     & a.theme:focus{
-        outline:1px solid white;
+        font-size:larger;
     }
 
 
