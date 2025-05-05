@@ -31,14 +31,13 @@ type RegistrationData struct {
 	TimeoutInMinutes        int
 }
 
-
 /*
 Represents the data that is needed by navigator.credentials.get in the frontend
 */
 type AuthenticationData struct {
-	Challenge          Challenge
-	RelyingPartyId     string
-	TimeoutInMinutes   int
+	Challenge        Challenge
+	RelyingPartyId   string
+	TimeoutInMinutes int
 }
 
 var ListOfSupportedCoseAlgorithms = []int64{-8, -7, -257}
@@ -46,7 +45,7 @@ var TimeoutInMinutes = 5
 
 var RP = RelyingParty{
 	Name: "localhost",
-	Id:   "localhost",
+	Id:   "w6sxn51j-8080.asse.devtunnels.ms",
 }
 
 type ClientData struct {
@@ -157,7 +156,7 @@ Assuming that the following are true:
 
 	Also, please note that functionToSaveCredentialsIntoDatabase should return true if the operation is succesful and false if the operation is not succesful.
 */
-func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, authData []byte,  functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
+func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, authData []byte, functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
 	hash := authData[0:32]
 
 	credentialIdLength := binary.BigEndian.Uint16(authData[53:55])
@@ -207,7 +206,7 @@ func SignUp(originOfServer string, userId string, challengeId string, functionTo
 		return false
 	}
 
-	isOperationSuccesful := SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId, attestationObject.AuthData,  functionToSaveCredentialsIntoDatabase)
+	isOperationSuccesful := SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId, attestationObject.AuthData, functionToSaveCredentialsIntoDatabase)
 
 	return isOperationSuccesful
 }
@@ -263,7 +262,7 @@ func Authenticate(publicKeyCredential map[string]any, functionToGetPublicKeyAndS
 
 	functionToUpdateSignatureCounter(decodedRawId, signatureCounterFromAuthenticator)
 
-	if isAuthenticated{
+	if isAuthenticated {
 		return string(decodedUserHandle)
 	} else {
 		return ""

@@ -1,5 +1,6 @@
 import {displaySuccesfulMessage, displayUnsuccesfulMessage, clearMessages} from './Utils.js'
 
+
 /**
  * @param {string} username
  */
@@ -41,7 +42,7 @@ export async function signUp(username){
         },
         authenticatorSelection:{
             userVerification:"required",
-            authenticatorAttachment:"cross-platform"
+            residentKey:"required"
         },
         pubKeyCredParams:pubKeyCredParams,
         timeout:registrationData.TimeoutInMinutes*60*1000, //timeout will be in milliseconds. That's why timeoutInMinutes is multiplied by 60 to get the number of seconds and further multiplied by 1000 to get the number of milliseconds.
@@ -54,10 +55,14 @@ export async function signUp(username){
     let credential;
     try{
         credential = await navigator.credentials.create({
-            publicKey:publicKeyCredentialCreationOptions
+            publicKey:publicKeyCredentialCreationOptions,
         })
     }catch(error){
         if (error.message.includes("The operation either timed out or was not allowed.")){
+            return;
+        }
+
+        if (error.message.includes("denied permission")){
             return;
         }
         displayUnsuccesfulMessage(error.message)

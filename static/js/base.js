@@ -11,6 +11,7 @@ function saveThemeIntoLocalStorage(){
  * @param {HTMLAnchorElement} element 
  */
 function toggleTheme(element){
+    element.blur()
     if (window.theme === "light"){
         window.theme = "dark"
     } else {
@@ -59,7 +60,7 @@ function collapseNavbar(){
     navbarContents.style.height = '0';
     navbarContents.inert = true;
 
-    navbarToggler.innerHTML = '&#8801'; //unicode icon for hamburger;
+    navbarToggler.innerHTML = '&#8801'; //Hamburger icon.
     navbarToggler.setAttribute('aria-expanded','false');
 
 }

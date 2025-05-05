@@ -7,17 +7,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Your website description">
     <title>{{block "title" .}} {{end}}</title>
-    <script defer src="/static/js/base.js?baby"></script>
+    <script defer src="/static/js/base.js?babiSh"></script>
     <link rel="stylesheet" href="/static/css/base.css?css">
     <script  defer src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 
-<body onload="window.setTimeout(()=>setTheme(),500) /*The timeout should be based on the timeout of the transition defined in /static/css/base.css.*/; collapseNavbar();updateNavbarStyleBasedOnScreenWidth();registerServiceWorker()" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar(); setTheme(); ">
+<body onload="window.setTimeout(()=>setTheme(),500) /*The timeout should be based on the timeout of the transition defined in /static/css/base.css.*/; collapseNavbar();updateNavbarStyleBasedOnScreenWidth();registerServiceWorker()" hx-on::after-settle="if (window.screen.availWidth<maximum_width_for_navbar_to_be_displayed_in_mobile_mode) collapseNavbar(); setTheme(); " >
     
     <header>
         <nav id="navbar" hx-boost="true" hx-preserve>
             <div class="navbar-header" >
-                <a href="/" class="brand" hx-indicator="#spinner" >Brand</a>
+                <div><a href="/" class="brand" hx-indicator="#spinner" >Brand</a></div>
                 <button  onclick="toggleNavbar()"  aria-controls="navbar-contents" aria-label="navigation toggler"></button>
             </div>
 

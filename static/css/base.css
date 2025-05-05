@@ -41,16 +41,20 @@ nav{
     }
     
     & .navbar-header{
-        padding:1rem;
+        padding-left:2rem;
         font-size:larger;
-    
+        height:3rem;
+        padding-right:2rem;
+        display:grid;
+        grid-template-columns:auto min-content;
+        align-items:center;
+
         /**
         Style the hamburger button
         */
         & button{
             color:white;
             background-color:transparent;
-            float:right;
             font-size:inherit;
             border:none;
         }
@@ -60,6 +64,7 @@ nav{
         color:var(--navbar-hover-or-focus-color);
         outline:none;
     }
+
 
     & a.theme{
         padding:0.25rem;
@@ -72,19 +77,23 @@ nav{
 
     & ul{
         transition:height 0.5s ease, margin-left 0.5s ease;
-        margin-left:0;
+        display:grid;
+        grid-auto-flow:row;
+        margin-left:2rem;
         height:0;
+        & li::marker{
+            content:'';
+        }
+
         & li{
-            padding:1rem;
+            padding-top:1rem;
+            padding-bottom:1rem;
         }
 
         & li:last-of-type{
             padding-bottom:2rem;
         }
 
-        & li::marker{
-            content:'';
-        }
     }
 
     & ul.hide-contents{
@@ -94,9 +103,7 @@ nav{
 
 nav.desktop-style{
     & .navbar-header{
-        display:inline-block;
-        margin-right:2rem;
-
+        display:inline-grid;
         /*
         Hide the hamburger icon.
         */
@@ -106,28 +113,27 @@ nav.desktop-style{
     }
 
     & ul{
-        /*Force the contents of the navbar to be displayed */
+        display:inline-grid;
+        gap:2rem;
+        align-items:center;
+        grid-auto-flow: column;
         height:auto !important;
-        display:inline-block;
-        & li{
-            display:inline-block;
-        }
+    }
 
-        & li:last-of-type{
-            padding-bottom:1rem;
-        }
+    & li:last-of-type{
+        padding-bottom:1rem;
     }
 }
 
 .page-title{
-    margin-top:1rem;
-    margin-bottom:1rem;
+    margin-top:2rem;
+    margin-bottom:2rem;
     text-align:center;
 }
 
 form{
-    width:80%;
-    max-width:fit-content;
+    width:70%;
+    max-width:500px;
     margin-left:auto;
     margin-right:auto;
 
@@ -169,7 +175,7 @@ body.dark-theme{
 /*Code for HTMX spinner begins*/
 #spinner{
     opacity:0;
-    transition:opacity 0.5s ease;
+    transition:opacity 500ms ease-in;
     position:absolute;
     width:50vmin;
     height:50vmin;
@@ -204,8 +210,6 @@ body.dark-theme{
 }
 
 /*Code for HTMX spinner ends*/
-
-
 .screen-readers-only{
     position: absolute !important; /* Outside the DOM flow */
     height: 1px; width: 1px; /* Nearly collapsed */
