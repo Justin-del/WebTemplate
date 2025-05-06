@@ -3,7 +3,7 @@ package main
 import (
 	"WebTemplate/Database"
 	RoutesHandler "WebTemplate/RoutesHandler"
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
+	TemplateParser "WebTemplate/TemplateParser"
 	"net/http"
 	"os"
 )

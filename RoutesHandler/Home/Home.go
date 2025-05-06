@@ -1,7 +1,7 @@
 package home
 
 import (
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
+	TemplateParser "WebTemplate/TemplateParser"
 	"net/http"
 )
 

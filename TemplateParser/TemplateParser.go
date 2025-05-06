@@ -10,7 +10,7 @@ var signUpTemplateFiles []string = []string{"./templates/base.html", "./template
 var loginTemplateFiles []string = []string{"./templates/base.html", "./templates/Login.html"}
 var deleteAccountTemplateFiles []string = []string{"./templates/base.html", "./templates/DeleteAccount.html"}
 var homeTemplateFiles []string = []string{"./templates/base.html", "./templates/index.html"}
-var authorizedTemplateFiles []string = []string{"./templates/base.html","./templates/Authorized.html"}
+var authorizedTemplateFiles []string = []string{"./templates/base.html", "./templates/Authorized.html"}
 
 /*
 The key will be the name of the template file to execute (without HTML extension) .
@@ -19,12 +19,15 @@ var templatesMap map[string]*template.Template = make(map[string]*template.Templ
 
 var shouldReparseTemplateOnEveryRequest = false
 
+// You can set this variable to true before calling ExecuteTemplate or ExecuteTemplateWithAdditionalData if you know that the user is already logged in. This will prevent database lookup for checking if the user is already logged in when ExecuteTemplate or ExecuteTemplateWithAdditionalData is called.
+var IsLoggedIn *bool = nil
+
 func InitTemplatesMap() {
 	templatesMap["SignUp"], _ = template.ParseFiles(signUpTemplateFiles...)
 	templatesMap["Login"], _ = template.ParseFiles(loginTemplateFiles...)
 	templatesMap["DeleteAccount"], _ = template.ParseFiles(deleteAccountTemplateFiles...)
 	templatesMap["index"], _ = template.ParseFiles(homeTemplateFiles...)
-	templatesMap["Authorized"],_ = template.ParseFiles(authorizedTemplateFiles...) 
+	templatesMap["Authorized"], _ = template.ParseFiles(authorizedTemplateFiles...)
 }
 
 /*
@@ -52,11 +55,24 @@ func ExecuteTemplateWithAdditionalData(templateName string, pageName string, res
 		AdditionalData any
 	}
 
-	data := Data{
-		IsLoggedIn:     Sessions.DoesSessionExistsInDatabase(sessionId),
-		PageName:       pageName,
-		AdditionalData: additionalData,
+	var data Data
+
+	if IsLoggedIn == nil {
+		data = Data{
+			IsLoggedIn:     Sessions.DoesSessionExistsInDatabase(sessionId),
+			PageName:       pageName,
+			AdditionalData: additionalData,
+		}
+	} else {
+		data = Data{
+			IsLoggedIn:     *IsLoggedIn,
+			PageName:       pageName,
+			AdditionalData: additionalData,
+		}
 	}
+
+	//This variable must be set to nil after it is used because whether the user is logged in or not when this function is called again is unknown.
+	IsLoggedIn = nil
 
 	if data.IsLoggedIn {
 		//Disable caching of sensitive data.
@@ -67,7 +83,7 @@ func ExecuteTemplateWithAdditionalData(templateName string, pageName string, res
 	responseWriter.Header().Add("Cross-Origin-Opener-Policy", "same-origin")
 	responseWriter.Header().Add("X-Frame-Options", "deny")
 
-	if (shouldReparseTemplateOnEveryRequest){
+	if shouldReparseTemplateOnEveryRequest {
 		InitTemplatesMap()
 	}
 

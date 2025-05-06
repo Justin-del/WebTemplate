@@ -3,7 +3,7 @@ package SignUp
 import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
 	users "WebTemplate/Database/Users"
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
+	TemplateParser "WebTemplate/TemplateParser"
 	webauthn "WebTemplate/Utils/WebAuthn"
 	"WebTemplate/globals"
 	"encoding/json"

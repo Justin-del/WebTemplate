@@ -4,7 +4,7 @@ import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
 	Credentials "WebTemplate/Database/Credentials"
 	Users "WebTemplate/Database/Users"
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
+	TemplateParser "WebTemplate/TemplateParser"
 	webauthn "WebTemplate/Utils/WebAuthn"
 	"encoding/json"
 	"net/http"

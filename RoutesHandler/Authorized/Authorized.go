@@ -2,7 +2,7 @@ package authorized
 
 import (
 	Sessions "WebTemplate/Database/Sessions"
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
+	TemplateParser "WebTemplate/TemplateParser"
 	"net/http"
 )
 

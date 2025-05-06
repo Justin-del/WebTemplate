@@ -17,4 +17,4 @@ Also, you might want to change the session timeout at [Sessions.go](/Database/Se
 
 Also, before you deploy a website that is built using this template to production, don't forget to change the OriginOfServer variable at [globals.go](/globals/globals.go) and the origin variable at [ServiceWorker.js](/static/js/ServiceWorker.js).
 
-Also, you can set shouldParseTemplateOnEveryRequest variable in [TemplateParser.go](/RoutesHandler/TemplateParser/TemplateParser.go)  to true for convenience during development. However, you must remember to change the variable to false during production as reparsing a template on every request can cause performance bottlenecks.
+Also, you can set shouldParseTemplateOnEveryRequest variable in [TemplateParser.go](/TemplateParser/TemplateParser.go)  to true for convenience during development. However, you must remember to change the variable to false during production as reparsing a template on every request can cause performance bottlenecks.
