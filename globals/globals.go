@@ -1,5 +1,5 @@
 // This file contains application specific globals.
-package globals
+package Globals
 
 /*
 Should not have a slash at the end.

@@ -1,7 +1,7 @@
 package webauthn
 
 import (
-	"WebTemplate/globals"
+	Globals "WebTemplate/Globals"
 	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
@@ -244,7 +244,7 @@ func Authenticate(publicKeyCredential map[string]any, functionToGetPublicKeyAndS
 
 	var clientDataJSON string = response["clientDataJSON"].(string)
 
-	isClientDataJSONCorrect := IsClientDataJSONCorrect(globals.OriginOfServer, correct_challenge, "webauthn.get", clientDataJSON)
+	isClientDataJSONCorrect := IsClientDataJSONCorrect(Globals.OriginOfServer, correct_challenge, "webauthn.get", clientDataJSON)
 
 	authData := response["authenticatorData"].(string)
 	decodedAuthData, _ := base64.RawURLEncoding.DecodeString(authData)

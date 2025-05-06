@@ -2,34 +2,34 @@ package SignUp
 
 import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
-	users "WebTemplate/Database/Users"
+	Users "WebTemplate/Database/Users"
 	TemplateParser "WebTemplate/TemplateParser"
-	webauthn "WebTemplate/Utils/WebAuthn"
-	"WebTemplate/globals"
+	WebAuthn "WebTemplate/Utils/WebAuthn"
+	Globals "WebTemplate/Globals"
 	"encoding/json"
 	"net/http"
 )
 
 func HandleRoutes() {
-	http.HandleFunc("GET /SignUp", func(responseWriter http.ResponseWriter, request *http.Request) {
-		TemplateParser.ExecuteTemplate("SignUp", "Sign Up", responseWriter, request)
+	http.HandleFunc("GET /signUp", func(responseWriter http.ResponseWriter, request *http.Request) {
+		TemplateParser.ExecuteTemplate("signUp", "Sign Up", responseWriter, request)
 	})
 
-	http.HandleFunc("GET /SignUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {
+	http.HandleFunc("GET /signUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {
 		challenge := AuthenticationChallenges.CreateNewChallenge()
 
-		data := webauthn.RegistrationData{
+		data := WebAuthn.RegistrationData{
 			Challenge:               challenge,
-			RP:                      webauthn.RP,
-			SupportedCoseAlgorithms: webauthn.ListOfSupportedCoseAlgorithms,
-			TimeoutInMinutes:        webauthn.TimeoutInMinutes,
+			RP:                      WebAuthn.RP,
+			SupportedCoseAlgorithms: WebAuthn.ListOfSupportedCoseAlgorithms,
+			TimeoutInMinutes:        WebAuthn.TimeoutInMinutes,
 		}
 
 		responseWriter.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(responseWriter).Encode(data)
 	})
 
-	http.HandleFunc("POST /SignUp/{challengeId}/{userId}", func(responseWriter http.ResponseWriter, request *http.Request) {
+	http.HandleFunc("POST /signUp/{challengeId}/{userId}", func(responseWriter http.ResponseWriter, request *http.Request) {
 
 		var publicKeyCredential map[string]any
 		err := json.NewDecoder(request.Body).Decode(&publicKeyCredential)
@@ -38,7 +38,7 @@ func HandleRoutes() {
 			http.Error(responseWriter, "Error", 400)
 		}
 
-		isOperationSuccesful := webauthn.SignUp(globals.OriginOfServer, request.PathValue("userId"), request.PathValue("challengeId"), AuthenticationChallenges.DeleteChallengeByID, publicKeyCredential, users.AddUserIntoDatabaseWithCredentials)
+		isOperationSuccesful := WebAuthn.SignUp(Globals.OriginOfServer, request.PathValue("userId"), request.PathValue("challengeId"), AuthenticationChallenges.DeleteChallengeByID, publicKeyCredential, Users.AddUserIntoDatabaseWithCredentials)
 
 		if isOperationSuccesful {
 			responseWriter.WriteHeader(200)

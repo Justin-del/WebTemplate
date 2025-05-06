@@ -1,7 +1,7 @@
 
 const cacheFirstWithCacheRefresh  = {
     "urls":["https://unpkg.com/htmx.org@2.0.4"],
-    "paths":["/","/SignUp","/login","/deleteAccount"],
+    "paths":["/","/signUp","/login","/deleteAccount"],
     "directories":["/static"]
 }
 

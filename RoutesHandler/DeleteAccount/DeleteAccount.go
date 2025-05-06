@@ -12,7 +12,7 @@ import (
 
 func HandleRoutes() {
 	http.HandleFunc("GET /deleteAccount", func(responseWriter http.ResponseWriter, request *http.Request) {
-		TemplateParser.ExecuteTemplate("DeleteAccount", "Delete Account", responseWriter, request)
+		TemplateParser.ExecuteTemplate("deleteAccount", "Delete Account", responseWriter, request)
 	})
 
 	http.HandleFunc("POST /deleteAccount/{challengeId}", func(responseWriter http.ResponseWriter, request *http.Request) {

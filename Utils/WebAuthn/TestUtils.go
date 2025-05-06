@@ -1,7 +1,7 @@
 package webauthn
 
 import (
-	"WebTemplate/globals"
+	Globals "WebTemplate/Globals"
 	"encoding/base64"
 	"encoding/binary"
 	"encoding/json"
@@ -11,7 +11,7 @@ import (
 )
 
 func GetRegistrationData() RegistrationData {
-	response, err := http.Get(globals.OriginOfServer + "/SignUp/RegistrationData")
+	response, err := http.Get(Globals.OriginOfServer + "/signUp/RegistrationData")
 	if err != nil {
 		panic(err)
 	}
@@ -129,7 +129,7 @@ func CreateMockPublicKeyCredential(clientData map[string]any, publicKey []byte, 
 	response["clientDataJSON"] = base64.RawURLEncoding.EncodeToString(clientDataJSON)
 
 	response["attestationObject"] = CreateMockAttestationObject(publicKey, relyingPartyId, userPresent, userVerified, backupEligibility, backupState, credentialId)
-	
+
 	publicKeyCredential["response"] = response
 
 	jsonString, _ := json.Marshal(publicKeyCredential)

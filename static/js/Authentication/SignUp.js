@@ -6,7 +6,7 @@ import {displaySuccesfulMessage, displayUnsuccesfulMessage, clearMessages} from 
  */
 export async function signUp(username){
     clearMessages()
-    let response = await fetch("/SignUp/RegistrationData");
+    let response = await fetch("/signUp/RegistrationData");
     
     /**@type {{Challenge:{
       Id:number,
@@ -69,7 +69,7 @@ export async function signUp(username){
         return;
     }
 
-    response=await fetch(`/SignUp/${registrationData.Challenge.Id}/${user_id}`,{
+    response=await fetch(`/signUp/${registrationData.Challenge.Id}/${user_id}`,{
         method:'POST',
         body:JSON.stringify(credential),
         headers:{

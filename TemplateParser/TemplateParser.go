@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-var signUpTemplateFiles []string = []string{"./templates/base.html", "./templates/SignUp.html"}
-var loginTemplateFiles []string = []string{"./templates/base.html", "./templates/Login.html"}
-var deleteAccountTemplateFiles []string = []string{"./templates/base.html", "./templates/DeleteAccount.html"}
+var signUpTemplateFiles []string = []string{"./templates/base.html", "./templates/signUp.html"}
+var loginTemplateFiles []string = []string{"./templates/base.html", "./templates/login.html"}
+var deleteAccountTemplateFiles []string = []string{"./templates/base.html", "./templates/deleteAccount.html"}
 var homeTemplateFiles []string = []string{"./templates/base.html", "./templates/index.html"}
-var authorizedTemplateFiles []string = []string{"./templates/base.html", "./templates/Authorized.html"}
+var authorizedTemplateFiles []string = []string{"./templates/base.html", "./templates/authorized.html"}
 
 /*
 The key will be the name of the template file to execute (without HTML extension) .
@@ -23,11 +23,11 @@ var shouldReparseTemplateOnEveryRequest = false
 var IsLoggedIn *bool = nil
 
 func InitTemplatesMap() {
-	templatesMap["SignUp"], _ = template.ParseFiles(signUpTemplateFiles...)
-	templatesMap["Login"], _ = template.ParseFiles(loginTemplateFiles...)
-	templatesMap["DeleteAccount"], _ = template.ParseFiles(deleteAccountTemplateFiles...)
+	templatesMap["signUp"], _ = template.ParseFiles(signUpTemplateFiles...)
+	templatesMap["login"], _ = template.ParseFiles(loginTemplateFiles...)
+	templatesMap["deleteAccount"], _ = template.ParseFiles(deleteAccountTemplateFiles...)
 	templatesMap["index"], _ = template.ParseFiles(homeTemplateFiles...)
-	templatesMap["Authorized"], _ = template.ParseFiles(authorizedTemplateFiles...)
+	templatesMap["authorized"], _ = template.ParseFiles(authorizedTemplateFiles...)
 }
 
 /*

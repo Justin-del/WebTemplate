@@ -1,8 +1,8 @@
 package SignUp
 
 import (
+	globals "WebTemplate/Globals"
 	webauthn "WebTemplate/Utils/WebAuthn"
-	"WebTemplate/globals"
 	"crypto/rand"
 	"net/http"
 	"strconv"
@@ -22,7 +22,7 @@ func TestCannotSignUpWithAReplayAttack(t *testing.T) {
 
 	userId := uuid.New().String()
 	credentialId := uuid.New().String()
-	postUrl := globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
+	postUrl := globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
 
 	// First request
 	resp, err := http.Post(postUrl, "application/json", strings.NewReader(webauthn.CreateMockPublicKeyCredential(clientData, supportedPublicKey, registrationData.RP.Id, true, true, false, false, credentialId)))
@@ -54,7 +54,7 @@ func TestCannotSignUpIfClientDataIsIncorrect(t *testing.T) {
 
 		if i == 0 {
 			//Incorrect challenge
-			clientData = webauthn.CreateClientData(append(registrationData.Challenge.Challenge,[]byte{0}...), "webauthn.create", globals.OriginOfServer)
+			clientData = webauthn.CreateClientData(append(registrationData.Challenge.Challenge, []byte{0}...), "webauthn.create", globals.OriginOfServer)
 		} else if i == 1 {
 			//Incorrect type
 			clientData = webauthn.CreateClientData(registrationData.Challenge.Challenge, "webauthn.bola", globals.OriginOfServer)
@@ -65,7 +65,7 @@ func TestCannotSignUpIfClientDataIsIncorrect(t *testing.T) {
 
 		userId := uuid.New().String()
 		credentialId := uuid.New().String()
-		postUrl := globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
+		postUrl := globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
 
 		resp, err := http.Post(postUrl, "application/json", strings.NewReader(webauthn.CreateMockPublicKeyCredential(clientData, supportedPublicKey, webauthn.RP.Id, true, true, false, false, credentialId)))
 
@@ -104,7 +104,7 @@ func TestCannotSignUpIfPublicKeyCredentialIsIncorrect(t *testing.T) {
 
 	for i, credential := range incorrectPublicKeyCredentials {
 		userId := uuid.New().String()
-		postUrl := globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationDatas[i].Challenge.Id) + "/" + userId
+		postUrl := globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationDatas[i].Challenge.Id) + "/" + userId
 		resp, err := http.Post(postUrl, "application/json", strings.NewReader(credential))
 		if err != nil {
 			t.Fatalf("Failed to make POST request: %v", err)
@@ -140,7 +140,7 @@ func TestForValidBackupStateAndBackupElibility(t *testing.T) {
 
 	for i, credential := range publicKeyCredentials {
 		userId := uuid.New().String()
-		postUrl := globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationDatas[i].Challenge.Id) + "/" + userId
+		postUrl := globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationDatas[i].Challenge.Id) + "/" + userId
 		resp, err := http.Post(postUrl, "application/json", strings.NewReader(credential))
 		if err != nil {
 			t.Fatalf("Failed to make POST request: %v", err)
@@ -166,7 +166,7 @@ func TestCannotSignUpIfCredentialIdIsGreaterThan1023Bytes(t *testing.T) {
 	credentialId := string(credentialIdBytes)
 
 	userId := uuid.New().String()
-	postUrl := globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
+	postUrl := globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
 
 	resp, err := http.Post(postUrl, "application/json", strings.NewReader(webauthn.CreateMockPublicKeyCredential(clientData, supportedPublicKey, registrationData.RP.Id, true, true, false, false, credentialId)))
 	if err != nil {
@@ -185,7 +185,7 @@ func TestCannotSignUpIfCredentialIdIsAlreadyRegisteredForAUser(t *testing.T) {
 	clientData := webauthn.CreateClientData(registrationData.Challenge.Challenge, "webauthn.create", globals.OriginOfServer)
 
 	userId := uuid.New().String()
-	postUrl := globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
+	postUrl := globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
 
 	credentialId := uuid.New().String()
 
@@ -206,7 +206,7 @@ func TestCannotSignUpIfCredentialIdIsAlreadyRegisteredForAUser(t *testing.T) {
 	clientData = webauthn.CreateClientData(registrationData.Challenge.Challenge, "webauthn.create", globals.OriginOfServer)
 
 	userId = uuid.New().String()
-	postUrl = globals.OriginOfServer + "/SignUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
+	postUrl = globals.OriginOfServer + "/signUp/" + strconv.Itoa(registrationData.Challenge.Id) + "/" + userId
 
 	// Sign up again with the same credentialId.
 	resp, err = http.Post(postUrl, "application/json", strings.NewReader(webauthn.CreateMockPublicKeyCredential(clientData, supportedPublicKey, registrationData.RP.Id, true, true, false, false, credentialId)))
