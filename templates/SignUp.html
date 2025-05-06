@@ -12,16 +12,19 @@
 <form>
     <div>
         <label for="username">Username</label>
-        <input id="username" name="username" />
+        <input id="username" name="username" autocomplete="off" />
     </div>
     <button type="button" onclick="const username=document.querySelector('#username').value;signUp(username);
     ">Sign Up</button>
      <div>Already have an account? <a hx-indicator="#spinner" hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">Login</a></div>
-    <div class="error-message" aria-live="polite" aria-atomic="true">
+    
+    <div>
+        <div class="error-message" aria-live="polite" aria-atomic="true">
 
-    </div>
-    <div class="succesful-message" aria-live="polite" aria-atomic="true">
-        
+        </div>
+        <div class="succesful-message" aria-live="polite" aria-atomic="true">
+                
+        </div>
     </div>
 </form>
 
