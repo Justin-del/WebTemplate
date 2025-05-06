@@ -1,11 +1,10 @@
 package Database
 
 import (
-	AuthenticationChallenges "TodoApp/Database/AuthenticationChallenges"
-	Credentials "TodoApp/Database/Credentials"
-	Sessions "TodoApp/Database/Sessions"
-	Todos "TodoApp/Database/Todos"
-	Users "TodoApp/Database/Users"
+	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
+	Credentials "WebTemplate/Database/Credentials"
+	Sessions "WebTemplate/Database/Sessions"
+	Users "WebTemplate/Database/Users"
 )
 
 func CreateTablesIfNotExists() {
@@ -13,5 +12,4 @@ func CreateTablesIfNotExists() {
 	Users.CreateTableIfNotExists()
 	Credentials.CreateTableIfNotExists()
 	Sessions.CreateTableIfNotExists()
-	Todos.CreateTableIfNotExists()
 }

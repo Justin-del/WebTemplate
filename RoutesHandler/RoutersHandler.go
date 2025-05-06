@@ -1,13 +1,13 @@
 package routeshandler
 
 import (
-	Authorized "TodoApp/RoutesHandler/Todo"
-	DeleteAccount "TodoApp/RoutesHandler/DeleteAccount"
-	Home "TodoApp/RoutesHandler/Home"
-	Login "TodoApp/RoutesHandler/Login"
-	Logout "TodoApp/RoutesHandler/Logout"
-	SignUp "TodoApp/RoutesHandler/SignUp"
-	StaticHandler "TodoApp/RoutesHandler/StaticHandler"
+	Authorized "WebTemplate/RoutesHandler/Authorized"
+	DeleteAccount "WebTemplate/RoutesHandler/DeleteAccount"
+	Home "WebTemplate/RoutesHandler/Home"
+	Login "WebTemplate/RoutesHandler/Login"
+	Logout "WebTemplate/RoutesHandler/Logout"
+	SignUp "WebTemplate/RoutesHandler/SignUp"
+	StaticHandler "WebTemplate/RoutesHandler/StaticHandler"
 )
 
 func HandleRoutes() {

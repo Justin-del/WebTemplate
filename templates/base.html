@@ -8,8 +8,7 @@
     <meta name="description" content="Your website description">
     <title>{{block "title" .}} {{end}}</title>
     <script defer src="/static/js/base.js?babiSh"></script>
-    <link rel="stylesheet" href="/static/css/base.css?cascading_style_sheets">
-    {{block "stylesheet" .}} {{end}}
+    <link rel="stylesheet" href="/static/css/base.css?css">
     <script  defer src="https://unpkg.com/htmx.org@2.0.4"></script>
 </head>
 
@@ -18,7 +17,7 @@
     <header>
         <nav id="navbar" hx-boost="true" hx-preserve>
             <div class="navbar-header" >
-                <div><a href="/" class="brand" hx-indicator="#spinner" >Todo App</a></div>
+                <div><a href="/" class="brand" hx-indicator="#spinner" >Brand</a></div>
                 <button  onclick="toggleNavbar()"  aria-controls="navbar-contents" aria-label="navigation toggler"></button>
             </div>
 
@@ -26,7 +25,7 @@
                     <!-- An example of how to display links conditionally for a navbar, depending on whether the user is logged in or not. -->                    
                     {{if $.IsLoggedIn}}
                         <li>
-                            <a href="/todo">Todo</a>
+                            <a href="/authorized">Authorized</a>
                         </li>
                         <li>
                             <a hx-post="/logout" href="javascript:;">Logout</a>

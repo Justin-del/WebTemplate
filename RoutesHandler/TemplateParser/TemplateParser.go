@@ -1,20 +1,15 @@
 package templateparser
 
 import (
-	Sessions "TodoApp/Database/Sessions"
+	Sessions "WebTemplate/Database/Sessions"
 	"html/template"
 	"net/http"
-	"strings"
 )
 
 var templatesFolder string = "templates"
 var baseTemplate string = "base"
 
 func ParseTemplate(templateName string, pageName string, responseWriter http.ResponseWriter, request *http.Request) {
-	ParseTemplateWithAdditionalData(templateName, pageName, responseWriter, request, nil)
-}
-
-func ParseTemplateWithAdditionalData(templateName string, pageName string, responseWriter http.ResponseWriter, request *http.Request, additionalData any) {
 	cookie, err := request.Cookie("session_id")
 
 	var sessionId string
@@ -24,16 +19,15 @@ func ParseTemplateWithAdditionalData(templateName string, pageName string, respo
 	}
 
 	type Data struct {
-		IsLoggedIn     bool
-		PageName       string
-		AdditionalData any
+		IsLoggedIn bool
+		PageName   string
 	}
 
 	data := Data{
-		IsLoggedIn:     Sessions.DoesSessionExistsInDatabase(sessionId),
-		PageName:       pageName,
-		AdditionalData: additionalData,
+		IsLoggedIn: Sessions.DoesSessionExistsInDatabase(sessionId),
+		PageName:   pageName,
 	}
+
 
 	if data.IsLoggedIn {
 		//Disable caching of sensitive data.
@@ -46,10 +40,5 @@ func ParseTemplateWithAdditionalData(templateName string, pageName string, respo
 
 	t, err := template.ParseFiles("./templates/"+baseTemplate+".html", "./templates/"+templateName+".html")
 
-	lastSlashIndex := strings.LastIndex(templateName, "/")
-	if lastSlashIndex != -1 {
-		templateName = templateName[lastSlashIndex+1:]
-	}
 	err = t.ExecuteTemplate(responseWriter, templateName+".html", data)
-
 }

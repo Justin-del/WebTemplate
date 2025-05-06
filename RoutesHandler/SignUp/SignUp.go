@@ -1,11 +1,11 @@
 package SignUp
 
 import (
-	AuthenticationChallenges "TodoApp/Database/AuthenticationChallenges"
-	users "TodoApp/Database/Users"
-	TemplateParser "TodoApp/RoutesHandler/TemplateParser"
-	webauthn "TodoApp/Utils/WebAuthn"
-	"TodoApp/globals"
+	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
+	users "WebTemplate/Database/Users"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
+	webauthn "WebTemplate/Utils/WebAuthn"
+	"WebTemplate/globals"
 	"encoding/json"
 	"net/http"
 )
@@ -33,7 +33,7 @@ func HandleRoutes() {
 
 		var publicKeyCredential map[string]any
 		err := json.NewDecoder(request.Body).Decode(&publicKeyCredential)
-
+		
 		if err != nil {
 			http.Error(responseWriter, "Error", 400)
 		}

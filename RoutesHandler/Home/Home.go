@@ -1,7 +1,7 @@
 package home
 
 import (
-	TemplateParser "TodoApp/RoutesHandler/TemplateParser"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
 	"net/http"
 )
 
