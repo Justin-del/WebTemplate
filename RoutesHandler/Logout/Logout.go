@@ -1,7 +1,7 @@
 package logout
 
 import (
-	Sessions "WebTemplate/Database/Sessions"
+	Sessions "TodoApp/Database/Sessions"
 	"net/http"
 )
 

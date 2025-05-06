@@ -1,4 +1,4 @@
-module WebTemplate
+module TodoApp
 
 go 1.24.2
 

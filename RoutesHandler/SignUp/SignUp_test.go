@@ -1,8 +1,8 @@
 package SignUp
 
 import (
-	webauthn "WebTemplate/Utils/WebAuthn"
-	"WebTemplate/globals"
+	webauthn "TodoApp/Utils/WebAuthn"
+	"TodoApp/globals"
 	"crypto/rand"
 	"net/http"
 	"strconv"
@@ -54,7 +54,7 @@ func TestCannotSignUpIfClientDataIsIncorrect(t *testing.T) {
 
 		if i == 0 {
 			//Incorrect challenge
-			clientData = webauthn.CreateClientData(append(registrationData.Challenge.Challenge,[]byte{0}...), "webauthn.create", globals.OriginOfServer)
+			clientData = webauthn.CreateClientData(append(registrationData.Challenge.Challenge, []byte{0}...), "webauthn.create", globals.OriginOfServer)
 		} else if i == 1 {
 			//Incorrect type
 			clientData = webauthn.CreateClientData(registrationData.Challenge.Challenge, "webauthn.bola", globals.OriginOfServer)

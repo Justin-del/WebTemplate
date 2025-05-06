@@ -1,7 +1,7 @@
 package webauthn
 
 import (
-	"WebTemplate/globals"
+	"TodoApp/globals"
 	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
@@ -44,7 +44,7 @@ var ListOfSupportedCoseAlgorithms = []int64{-8, -7, -257}
 var TimeoutInMinutes = 5
 
 var RP = RelyingParty{
-	Name: "localhost",
+	Name: "Todo App",
 	Id:   "w6sxn51j-8080.asse.devtunnels.ms",
 }
 

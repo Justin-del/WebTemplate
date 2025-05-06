@@ -1,7 +1,7 @@
 package authenticationchallenge
 
 import (
-	webauthn "WebTemplate/Utils/WebAuthn"
+	webauthn "TodoApp/Utils/WebAuthn"
 	"crypto/rand"
 	"database/sql"
 	"strconv"

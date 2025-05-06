@@ -1,8 +1,8 @@
 package main
 
 import (
-	"WebTemplate/Database"
-	RoutesHandler "WebTemplate/RoutesHandler"
+	"TodoApp/Database"
+	RoutesHandler "TodoApp/RoutesHandler"
 	"net/http"
 	"os"
 )

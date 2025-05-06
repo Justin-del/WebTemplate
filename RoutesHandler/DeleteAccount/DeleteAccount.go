@@ -1,11 +1,11 @@
 package deleteaccount
 
 import (
-	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
-	Credentials "WebTemplate/Database/Credentials"
-	Users "WebTemplate/Database/Users"
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
-	webauthn "WebTemplate/Utils/WebAuthn"
+	AuthenticationChallenges "TodoApp/Database/AuthenticationChallenges"
+	Credentials "TodoApp/Database/Credentials"
+	Users "TodoApp/Database/Users"
+	TemplateParser "TodoApp/RoutesHandler/TemplateParser"
+	webauthn "TodoApp/Utils/WebAuthn"
 	"encoding/json"
 	"net/http"
 )

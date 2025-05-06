@@ -1,11 +1,11 @@
 package login
 
 import (
-	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
-	Credentials "WebTemplate/Database/Credentials"
-	Sessions "WebTemplate/Database/Sessions"
-	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
-	webauthn "WebTemplate/Utils/WebAuthn"
+	AuthenticationChallenges "TodoApp/Database/AuthenticationChallenges"
+	Credentials "TodoApp/Database/Credentials"
+	Sessions "TodoApp/Database/Sessions"
+	TemplateParser "TodoApp/RoutesHandler/TemplateParser"
+	webauthn "TodoApp/Utils/WebAuthn"
 	"encoding/json"
 	"net/http"
 )
@@ -34,7 +34,7 @@ func HandleRoutes() {
 
 		userId := webauthn.Authenticate(publicKeyCredential, Credentials.GetPublicKeyAndSignatureCounter, AuthenticationChallenges.DeleteChallengeByID, request.PathValue("challengeId"), Credentials.UpdateSignatureCounter)
 
-		if (userId == ""){
+		if userId == "" {
 			responseWriter.WriteHeader(401)
 		} else {
 			sessionId := Sessions.CreateASession(userId)
