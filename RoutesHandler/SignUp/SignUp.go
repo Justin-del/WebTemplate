@@ -12,7 +12,7 @@ import (
 
 func HandleRoutes() {
 	http.HandleFunc("GET /SignUp", func(responseWriter http.ResponseWriter, request *http.Request) {
-		TemplateParser.ParseTemplate("SignUp", "Sign Up", responseWriter, request)
+		TemplateParser.ExecuteTemplate("SignUp", "Sign Up", responseWriter, request)
 	})
 
 	http.HandleFunc("GET /SignUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {
@@ -33,7 +33,7 @@ func HandleRoutes() {
 
 		var publicKeyCredential map[string]any
 		err := json.NewDecoder(request.Body).Decode(&publicKeyCredential)
-		
+
 		if err != nil {
 			http.Error(responseWriter, "Error", 400)
 		}

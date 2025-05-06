@@ -6,10 +6,38 @@ import (
 	"net/http"
 )
 
-var templatesFolder string = "templates"
-var baseTemplate string = "base"
+var signUpTemplateFiles []string = []string{"./templates/base.html", "./templates/SignUp.html"}
+var loginTemplateFiles []string = []string{"./templates/base.html", "./templates/Login.html"}
+var deleteAccountTemplateFiles []string = []string{"./templates/base.html", "./templates/DeleteAccount.html"}
+var homeTemplateFiles []string = []string{"./templates/base.html", "./templates/index.html"}
+var authorizedTemplateFiles []string = []string{"./templates/base.html","./templates/Authorized.html"}
 
-func ParseTemplate(templateName string, pageName string, responseWriter http.ResponseWriter, request *http.Request) {
+/*
+The key will be the name of the template file to execute (without HTML extension) .
+*/
+var templatesMap map[string]*template.Template = make(map[string]*template.Template)
+
+var shouldReparseTemplateOnEveryRequest = false
+
+func InitTemplatesMap() {
+	templatesMap["SignUp"], _ = template.ParseFiles(signUpTemplateFiles...)
+	templatesMap["Login"], _ = template.ParseFiles(loginTemplateFiles...)
+	templatesMap["DeleteAccount"], _ = template.ParseFiles(deleteAccountTemplateFiles...)
+	templatesMap["index"], _ = template.ParseFiles(homeTemplateFiles...)
+	templatesMap["Authorized"],_ = template.ParseFiles(authorizedTemplateFiles...) 
+}
+
+/*
+The templateName is the name of the template file that you would like to execute (without the HTML extension).
+*/
+func ExecuteTemplate(templateName string, pageName string, responseWriter http.ResponseWriter, request *http.Request) {
+	ExecuteTemplateWithAdditionalData(templateName, pageName, responseWriter, request, nil)
+}
+
+/*
+The templateName is the name of the template file that you would like to execute (without the HTML extension).
+*/
+func ExecuteTemplateWithAdditionalData(templateName string, pageName string, responseWriter http.ResponseWriter, request *http.Request, additionalData any) {
 	cookie, err := request.Cookie("session_id")
 
 	var sessionId string
@@ -19,15 +47,16 @@ func ParseTemplate(templateName string, pageName string, responseWriter http.Res
 	}
 
 	type Data struct {
-		IsLoggedIn bool
-		PageName   string
+		IsLoggedIn     bool
+		PageName       string
+		AdditionalData any
 	}
 
 	data := Data{
-		IsLoggedIn: Sessions.DoesSessionExistsInDatabase(sessionId),
-		PageName:   pageName,
+		IsLoggedIn:     Sessions.DoesSessionExistsInDatabase(sessionId),
+		PageName:       pageName,
+		AdditionalData: additionalData,
 	}
-
 
 	if data.IsLoggedIn {
 		//Disable caching of sensitive data.
@@ -38,7 +67,9 @@ func ParseTemplate(templateName string, pageName string, responseWriter http.Res
 	responseWriter.Header().Add("Cross-Origin-Opener-Policy", "same-origin")
 	responseWriter.Header().Add("X-Frame-Options", "deny")
 
-	t, err := template.ParseFiles("./templates/"+baseTemplate+".html", "./templates/"+templateName+".html")
+	if (shouldReparseTemplateOnEveryRequest){
+		InitTemplatesMap()
+	}
 
-	err = t.ExecuteTemplate(responseWriter, templateName+".html", data)
+	err = templatesMap[templateName].ExecuteTemplate(responseWriter, templateName+".html", additionalData)
 }

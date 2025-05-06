@@ -3,6 +3,7 @@ package main
 import (
 	"WebTemplate/Database"
 	RoutesHandler "WebTemplate/RoutesHandler"
+	TemplateParser "WebTemplate/RoutesHandler/TemplateParser"
 	"net/http"
 	"os"
 )
@@ -13,6 +14,7 @@ func main() {
 	Database.CreateTablesIfNotExists()
 
 	RoutesHandler.HandleRoutes()
+	TemplateParser.InitTemplatesMap()
 
 	http.ListenAndServe(":8080", nil)
 }

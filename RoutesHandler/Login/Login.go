@@ -12,7 +12,7 @@ import (
 
 func HandleRoutes() {
 	http.HandleFunc("GET /login", func(responseWriter http.ResponseWriter, request *http.Request) {
-		TemplateParser.ParseTemplate("login", "login", responseWriter, request)
+		TemplateParser.ExecuteTemplate("login", "login", responseWriter, request)
 	})
 
 	http.HandleFunc("GET /login/AuthenticationData", func(responseWriter http.ResponseWriter, request *http.Request) {
@@ -34,7 +34,7 @@ func HandleRoutes() {
 
 		userId := webauthn.Authenticate(publicKeyCredential, Credentials.GetPublicKeyAndSignatureCounter, AuthenticationChallenges.DeleteChallengeByID, request.PathValue("challengeId"), Credentials.UpdateSignatureCounter)
 
-		if (userId == ""){
+		if userId == "" {
 			responseWriter.WriteHeader(401)
 		} else {
 			sessionId := Sessions.CreateASession(userId)
