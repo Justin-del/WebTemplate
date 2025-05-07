@@ -8,7 +8,7 @@ const cacheFirstWithCacheRefresh  = {
 /**
  * This origin should match the origin of your application.
  */
-const origin = "localhost"
+const origin = "https://w6sxn51j-8080.asse.devtunnels.ms"
 
 /**
  * 
@@ -35,6 +35,10 @@ function isCacheFirstWithCacheRefresh(url_string){
     return false;
 }
 
+self.addEventListener("install", (event)=>{
+    self.skipWaiting();
+})
+
 self.addEventListener("fetch", (event) => {
     event.respondWith(
         (async()=>{
@@ -42,24 +46,24 @@ self.addEventListener("fetch", (event) => {
                 return await fetch(event.request)
             }
 
-            const responseFromNetwork = (async()=>{
-                try{
-                    const response = await fetch(event.request,{mode:'no-cors'});
-                    const cache = await caches.open("cache");
-                    await cache.put(event.request, response.clone());
-                    return response;
-                } catch(error){
-                    return undefined;
-                }
-            })();
-
             if (isCacheFirstWithCacheRefresh(event.request.url)){
-                return await caches.match(event.request) || await responseFromNetwork || new Response("You are offline.");
+                const responseFromNetwork = (async()=>{
+                    try{
+                        const response = await fetch(event.request,{mode:'no-cors'});
+                        const cache = await caches.open("cache");
+                        await cache.put(event.request, response.clone());
+                        return response;
+                    } catch(error){
+                        return undefined;
+                    }
+                })();
+                
+                const response = await caches.match(event.request) || await responseFromNetwork
+                return response;
             }
 
             const response = await fetch(event.request)
-            return response
-            
+            return response;
         
         })(),
     );

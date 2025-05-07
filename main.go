@@ -3,6 +3,7 @@ package main
 import (
 	"WebTemplate/Database"
 	RoutesHandler "WebTemplate/RoutesHandler"
+	Sessions "WebTemplate/Sessions"
 	TemplateParser "WebTemplate/TemplateParser"
 	"net/http"
 	"os"
@@ -16,5 +17,5 @@ func main() {
 	RoutesHandler.HandleRoutes()
 	TemplateParser.InitTemplatesMap()
 
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", Sessions.SessionMiddleWare(http.DefaultServeMux))
 }
