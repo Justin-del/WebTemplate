@@ -6,7 +6,24 @@ import {displaySuccesfulMessage, displayUnsuccesfulMessage, clearMessages} from 
  */
 export async function signUp(username){
     clearMessages()
-    let response = await fetch("/signUp/RegistrationData");
+
+    //Check if username exists in the database.
+    let response = await fetch("/signUp/isUsernameTaken",{
+        body:JSON.stringify({username}),
+        method:'POST'
+    })
+
+    /**
+     * @type {{isUsernameTaken: boolean}}
+     */
+    let {isUsernameTaken} = await response.json()
+
+    if (isUsernameTaken){
+        displayUnsuccesfulMessage("This username is already taken. Please choose another one.")
+        return;
+    }
+
+    response = await fetch("/signUp/RegistrationData");
     
     /**@type {{Challenge:{
       Id:number,
@@ -71,16 +88,16 @@ export async function signUp(username){
 
     response=await fetch(`/signUp/${registrationData.Challenge.Id}/${user_id}`,{
         method:'POST',
-        body:JSON.stringify(credential),
+        body:JSON.stringify({credential,username}),
         headers:{
             'Content-Type':'application/json'
         }
     })
 
     if (response.status!==200){
-        displayUnsuccesfulMessage()
+        displayUnsuccesfulMessage('Failed to sign up due to an unknown error. If a passkey was created, you will need to delete it.')
     } else {
-        displaySuccesfulMessage('Succesfully signed up! You can now proceed to <a hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">login</a>')
+        displaySuccesfulMessage('Succesfully signed up! You can now proceed to <a hx-on::send-error="Cannot connect to the server.  Please check your internet connection. If your connection is stable, there might be a temporary issue with the website. Please try again in a few minutes." hx-get="/login" hx-replace-url="true" hx-target="body" href="javascript:;">login</a>')
     }
 }
 
@@ -93,7 +110,7 @@ window.signUp=async(username)=>{
         await signUp(username)
     } catch (error){
         if (error.message === "Failed to fetch"){
-            alert("Failed to connect to the server. Please ensure that you are connected to the Internet.")
+            alert("Cannot connect to the server.  Please check your internet connection. If your connection is stable, there might be a temporary issue with the website. Please try again in a few minutes.")
         }
     }
 };

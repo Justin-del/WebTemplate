@@ -2,10 +2,10 @@ package SignUp
 
 import (
 	AuthenticationChallenges "WebTemplate/Database/AuthenticationChallenges"
-	Users "WebTemplate/Database/Users"
+	users "WebTemplate/Database/Users"
+	globals "WebTemplate/Globals"
 	TemplateParser "WebTemplate/TemplateParser"
-	WebAuthn "WebTemplate/Utils/WebAuthn"
-	Globals "WebTemplate/Globals"
+	webauthn "WebTemplate/Utils/WebAuthn"
 	"encoding/json"
 	"net/http"
 )
@@ -18,11 +18,11 @@ func HandleRoutes() {
 	http.HandleFunc("GET /signUp/RegistrationData", func(responseWriter http.ResponseWriter, request *http.Request) {
 		challenge := AuthenticationChallenges.CreateNewChallenge()
 
-		data := WebAuthn.RegistrationData{
+		data := webauthn.RegistrationData{
 			Challenge:               challenge,
-			RP:                      WebAuthn.RP,
-			SupportedCoseAlgorithms: WebAuthn.ListOfSupportedCoseAlgorithms,
-			TimeoutInMinutes:        WebAuthn.TimeoutInMinutes,
+			RP:                      webauthn.RP,
+			SupportedCoseAlgorithms: webauthn.ListOfSupportedCoseAlgorithms,
+			TimeoutInMinutes:        webauthn.TimeoutInMinutes,
 		}
 
 		responseWriter.Header().Set("Content-Type", "application/json")
@@ -31,19 +31,31 @@ func HandleRoutes() {
 
 	http.HandleFunc("POST /signUp/{challengeId}/{userId}", func(responseWriter http.ResponseWriter, request *http.Request) {
 
-		var publicKeyCredential map[string]any
-		err := json.NewDecoder(request.Body).Decode(&publicKeyCredential)
+		var decodedJSON map[string]any
+		err := json.NewDecoder(request.Body).Decode(&decodedJSON)
 
 		if err != nil {
 			http.Error(responseWriter, "Error", 400)
 		}
 
-		isOperationSuccesful := WebAuthn.SignUp(Globals.OriginOfServer, request.PathValue("userId"), request.PathValue("challengeId"), AuthenticationChallenges.DeleteChallengeByID, publicKeyCredential, Users.AddUserIntoDatabaseWithCredentials)
+		isOperationSuccesful := webauthn.SignUp(globals.OriginOfServer, request.PathValue("userId"), request.PathValue("challengeId"), AuthenticationChallenges.DeleteChallengeByID, decodedJSON, users.AddUserIntoDatabaseWithCredentials)
 
 		if isOperationSuccesful {
 			responseWriter.WriteHeader(200)
 		} else {
 			http.Error(responseWriter, "Error", 400)
 		}
+	})
+
+	http.HandleFunc("POST /signUp/isUsernameTaken", func(responseWriter http.ResponseWriter, request *http.Request) {
+		var decodedJSON map[string]any
+		err := json.NewDecoder(request.Body).Decode(&decodedJSON)
+
+		if err != nil {
+			http.Error(responseWriter, "Error", 400)
+		}
+
+		json.NewEncoder(responseWriter).Encode(map[string]bool{"isUsernameTaken": users.DoesUserNameExistsInDatabase(decodedJSON["username"].(string))})
+
 	})
 }

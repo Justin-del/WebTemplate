@@ -1,19 +1,20 @@
 package webauthn
 
 import (
-	Globals "WebTemplate/Globals"
+	globals "WebTemplate/Globals"
 	"encoding/base64"
 	"encoding/binary"
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/fxamacker/cbor/v2"
 )
 
 func GetRegistrationData() RegistrationData {
-	response, err := http.Get(Globals.OriginOfServer + "/signUp/RegistrationData")
+	response, err := http.Get(globals.OriginOfServer + "/signUp/RegistrationData")
 	if err != nil {
-		panic(err)
+		fmt.Println("Error is ", err)
 	}
 	defer response.Body.Close()
 
@@ -114,7 +115,7 @@ func SetNthBitTo1(b byte, n int) byte {
 	return b
 }
 
-func CreateMockPublicKeyCredential(clientData map[string]any, publicKey []byte, relyingPartyId string, userPresent bool, userVerified bool, backupEligibility bool, backupState bool, credentialId string) string {
+func CreateMockPublicKeyCredential(clientData map[string]any, publicKey []byte, relyingPartyId string, userPresent bool, userVerified bool, backupEligibility bool, backupState bool, credentialId string, userName string) string {
 	publicKeyCredential := make(map[string]any)
 
 	publicKeyCredential["authenticatorAttachment"] = "platform"
@@ -132,7 +133,13 @@ func CreateMockPublicKeyCredential(clientData map[string]any, publicKey []byte, 
 
 	publicKeyCredential["response"] = response
 
-	jsonString, _ := json.Marshal(publicKeyCredential)
+	finalJSON := make(map[string]any)
+	finalJSON["credential"] = publicKeyCredential
+	finalJSON["username"] = userName
+
+	jsonString, _ := json.Marshal(finalJSON)
+
+	fmt.Println("JSON string is", jsonString)
 
 	return string(jsonString)
 }

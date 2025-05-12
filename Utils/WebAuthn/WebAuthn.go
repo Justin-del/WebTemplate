@@ -1,7 +1,7 @@
 package webauthn
 
 import (
-	Globals "WebTemplate/Globals"
+	globals "WebTemplate/Globals"
 	"bytes"
 	"crypto/sha256"
 	"encoding/base64"
@@ -44,8 +44,8 @@ var ListOfSupportedCoseAlgorithms = []int64{-8, -7, -257}
 var TimeoutInMinutes = 5
 
 var RP = RelyingParty{
-	Name: Globals.ApplicationName,
-	Id:   Globals.DomainName,
+	Name: globals.ApplicationName,
+	Id:   globals.DomainName,
 }
 
 type ClientData struct {
@@ -156,7 +156,7 @@ Assuming that the following are true:
 
 	Also, please note that functionToSaveCredentialsIntoDatabase should return true if the operation is succesful and false if the operation is not succesful.
 */
-func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, authData []byte, functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
+func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, userName string, authData []byte, functionToSaveCredentialsIntoDatabase func(userId string, userName string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
 	hash := authData[0:32]
 
 	credentialIdLength := binary.BigEndian.Uint16(authData[53:55])
@@ -174,7 +174,7 @@ func SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId string, authData []byte
 
 	signatureCounter := binary.BigEndian.Uint32(authData[33:37])
 
-	isOperationSuccesful := functionToSaveCredentialsIntoDatabase(userId, credentialId, credentialPublicKey, signatureCounter)
+	isOperationSuccesful := functionToSaveCredentialsIntoDatabase(userId, userName, credentialId, credentialPublicKey, signatureCounter)
 	return isOperationSuccesful
 }
 
@@ -187,10 +187,12 @@ functionToSaveCredentialsIntoDatabase should return true if the operation is suc
 The SignUp function will return true if the operation is a success, and false if the operation is a failure.
 Also, it is of the caller's responsibility to ensure that the challenge gets deleted after it is used.
 */
-func SignUp(originOfServer string, userId string, challengeId string, functionToGetCorrectChallenge func(id any) []byte, publicKeyCredential map[string]any, functionToSaveCredentialsIntoDatabase func(userId string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
+func SignUp(originOfServer string, userId string, challengeId string, functionToGetCorrectChallenge func(id any) []byte, json map[string]any, functionToSaveCredentialsIntoDatabase func(userId string, userName string, credentialId []byte, credentialPublicKey []byte, signatureCounter uint32) bool) bool {
+
+	publicKeyCredential := json["credential"].(map[string]any)
+	userName := json["username"].(string)
 
 	response := publicKeyCredential["response"].(map[string]any)
-
 	clientDataJSON := response["clientDataJSON"].(string)
 
 	correctChallenge := functionToGetCorrectChallenge(challengeId)
@@ -206,7 +208,7 @@ func SignUp(originOfServer string, userId string, challengeId string, functionTo
 		return false
 	}
 
-	isOperationSuccesful := SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId, attestationObject.AuthData, functionToSaveCredentialsIntoDatabase)
+	isOperationSuccesful := SaveCredentialsIntoDatabaseIfAuthDataIsValid(userId, userName, attestationObject.AuthData, functionToSaveCredentialsIntoDatabase)
 
 	return isOperationSuccesful
 }
@@ -244,7 +246,7 @@ func Authenticate(publicKeyCredential map[string]any, functionToGetPublicKeyAndS
 
 	var clientDataJSON string = response["clientDataJSON"].(string)
 
-	isClientDataJSONCorrect := IsClientDataJSONCorrect(Globals.OriginOfServer, correct_challenge, "webauthn.get", clientDataJSON)
+	isClientDataJSONCorrect := IsClientDataJSONCorrect(globals.OriginOfServer, correct_challenge, "webauthn.get", clientDataJSON)
 
 	authData := response["authenticatorData"].(string)
 	decodedAuthData, _ := base64.RawURLEncoding.DecodeString(authData)
