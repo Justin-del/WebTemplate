@@ -44,8 +44,8 @@ var ListOfSupportedCoseAlgorithms = []int64{-8, -7, -257}
 var TimeoutInMinutes = 5
 
 var RP = RelyingParty{
-	Name: "localhost",
-	Id:   "localhost",
+	Name: Globals.ApplicationName,
+	Id:   Globals.DomainName,
 }
 
 type ClientData struct {
